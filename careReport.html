@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aさん ケア分析レポート｜認知症介護実践者研修 職場実習</title>
+<style>
+  :root {
+    --ink: #1a2035;
+    --ink-soft: #4a5568;
+    --ink-muted: #718096;
+    --bg: #f4f6fb;
+    --surface: #ffffff;
+    --border: #dde3ef;
+    --accent: #2f5fcb;
+    --accent-light: #e8eefb;
+    --teal: #1f8a7a;
+    --teal-light: #e4f4f1;
+    --amber: #c77a06;
+    --amber-light: #fef3dc;
+    --rose: #b83028;
+    --rose-light: #fde8e6;
+    --purple: #6d3fc0;
+    --purple-light: #f0eafb;
+    --green: #2e7d32;
+    --green-light: #e8f5e9;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', Meiryo, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    font-size: 14px;
+    line-height: 1.75;
+  }
+
+  /* ヘッダー */
+  header {
+    background: linear-gradient(135deg, #1a2a5e 0%, #2f5fcb 100%);
+    color: #fff;
+    padding: 1.5rem 1.2rem 1.2rem;
+    position: sticky;
+    top: 0;
+    z-index: 200;
+    box-shadow: 0 2px 12px rgba(0,0,0,.25);
+  }
+  header .badge {
+    display: inline-block;
+    background: rgba(255,255,255,.18);
+    border-radius: 20px;
+    padding: .15rem .7rem;
+    font-size: 10px;
+    letter-spacing: .1em;
+    margin-bottom: .4rem;
+  }
+  header h1 { font-size: 1.25rem; font-weight: 700; }
+  header .meta { font-size: 11px; color: #b0c4f0; margin-top: .3rem; }
+
+  /* タブナビ */
+  nav {
+    background: var(--surface);
+    border-bottom: 2px solid var(--border);
+    display: flex;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 0 .5rem;
+    position: sticky;
+    top: 80px;
+    z-index: 100;
+  }
+  nav a {
+    flex-shrink: 0;
+    padding: .75rem .9rem;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink-soft);
+    text-decoration: none;
+    border-bottom: 3px solid transparent;
+    transition: all .15s;
+    white-space: nowrap;
+  }
+  nav a:hover, nav a.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  /* メイン */
+  main { max-width: 900px; margin: 0 auto; padding: 1.5rem 1rem 5rem; }
+
+  /* セクション */
+  section { margin-bottom: 2.5rem; scroll-margin-top: 140px; }
+
+  .section-header {
+    display: flex; align-items: center; gap: .6rem;
+    margin-bottom: 1.1rem;
+    padding-bottom: .5rem;
+    border-bottom: 2px solid var(--accent);
+  }
+  .section-icon {
+    width: 32px; height: 32px; border-radius: 8px;
+    background: var(--accent); color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px; flex-shrink: 0;
+  }
+  .section-header h2 { font-size: 1rem; font-weight: 700; color: var(--accent); }
+  .section-header .sub { font-size: 11px; color: var(--ink-muted); margin-left: .3rem; }
+
+  /* カード */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.1rem 1.2rem;
+    margin-bottom: .8rem;
+  }
+
+  /* タグ */
+  .tag {
+    display: inline-block;
+    padding: .12rem .55rem;
+    border-radius: 12px;
+    font-size: 11px; font-weight: 600;
+    margin: .1rem .1rem;
+  }
+  .tag-blue { background: var(--accent-light); color: var(--accent); }
+  .tag-teal { background: var(--teal-light); color: var(--teal); }
+  .tag-amber { background: var(--amber-light); color: var(--amber); }
+  .tag-rose { background: var(--rose-light); color: var(--rose); }
+  .tag-purple { background: var(--purple-light); color: var(--purple); }
+  .tag-green { background: var(--green-light); color: var(--green); }
+
+  /* 仮説ボックス */
+  .hypothesis-box {
+    border-left: 4px solid var(--accent);
+    background: var(--accent-light);
+    border-radius: 0 8px 8px 0;
+    padding: .9rem 1rem;
+    margin-bottom: .7rem;
+    font-size: 13px;
+  }
+  .hypothesis-box .h-label {
+    font-size: 11px; font-weight: 700; color: var(--accent);
+    letter-spacing: .06em; margin-bottom: .35rem;
+  }
+
+  /* 職員意見ボックス */
+  .voice-box {
+    border-left: 4px solid var(--amber);
+    background: var(--amber-light);
+    border-radius: 0 8px 8px 0;
+    padding: .9rem 1rem;
+    margin-bottom: .7rem;
+    font-size: 13px;
+  }
+  .voice-box .v-label {
+    font-size: 11px; font-weight: 700; color: var(--amber);
+    letter-spacing: .06em; margin-bottom: .3rem;
+  }
+  .voice-box .quote { font-style: italic; margin-bottom: .4rem; }
+
+  /* フロー矢印 */
+  .flow-arrow {
+    text-align: center; font-size: 20px; color: var(--accent);
+    padding: .15rem 0; line-height: 1.2;
+  }
+  .flow-step {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: .9rem 1rem;
+    font-size: 13px;
+    margin-bottom: 0;
+  }
+  .flow-label {
+    font-size: 11px; font-weight: 700; color: var(--accent);
+    letter-spacing: .08em; margin-bottom: .5rem; text-transform: uppercase;
+  }
+  .flow-result {
+    background: var(--teal-light);
+    border: 1px solid #a8d8d3;
+    border-radius: 8px;
+    padding: .9rem 1rem;
+    font-size: 13px;
+  }
+  .flow-result .flow-label { color: var(--teal); }
+
+  /* テーブル */
+  .tbl { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .tbl th {
+    background: var(--accent-light); color: var(--accent);
+    font-weight: 700; padding: .55rem .75rem;
+    text-align: left; border: 1px solid #c8d8f5;
+    font-size: 11px;
+  }
+  .tbl td { padding: .55rem .75rem; border: 1px solid var(--border); vertical-align: top; }
+  .tbl tr:nth-child(even) td { background: #f9fafe; }
+
+  /* GAFグラフ */
+  .gaf-wrap {
+    display: flex; align-items: flex-end; gap: .8rem;
+    padding: 1rem 1rem .5rem; background: var(--surface);
+    border: 1px solid var(--border); border-radius: 10px;
+  }
+  .gaf-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: .4rem; }
+  .gaf-outer {
+    width: 100%; height: 110px; background: #f0f3fa;
+    border-radius: 6px; display: flex; align-items: flex-end; overflow: hidden;
+  }
+  .gaf-bar {
+    width: 100%; border-radius: 6px 6px 0 0;
+    display: flex; align-items: flex-end; justify-content: center;
+    padding-bottom: .3rem; color: #fff; font-size: 13px; font-weight: 700;
+  }
+  .gaf-lbl { font-size: 11px; color: var(--ink-soft); text-align: center; line-height: 1.4; }
+
+  /* 活動グリッド */
+  .act-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: .6rem; }
+  .act-item {
+    background: var(--teal-light); border: 1px solid #a8d8d3;
+    border-radius: 8px; padding: .8rem;
+  }
+  .act-emoji { font-size: 1.4rem; margin-bottom: .25rem; }
+  .act-title { font-weight: 700; color: var(--teal); font-size: 13px; margin-bottom: .2rem; }
+  .act-note { font-size: 11px; color: var(--ink-soft); }
+
+  /* ケアカード */
+  .care-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin-bottom: .8rem; }
+  .care-head { padding: .65rem 1rem; font-size: 13px; font-weight: 700; color: #fff; display: flex; align-items: center; gap: .4rem; }
+  .care-body { padding: 1rem; font-size: 13px; }
+  .care-item { display: flex; gap: .6rem; padding: .35rem 0; border-bottom: 1px solid var(--border); }
+  .care-item:last-child { border-bottom: none; }
+  .care-check { color: var(--teal); flex-shrink: 0; margin-top: .1rem; }
+  .care-example { font-size: 12px; color: var(--ink-soft); margin-top: .2rem; }
+
+  /* 証拠バッジ */
+  .evidence {
+    display: inline-flex; align-items: center; gap: .3rem;
+    background: #fff8ee; border: 1px solid #f5d08a;
+    border-radius: 6px; padding: .2rem .6rem;
+    font-size: 11px; color: var(--amber); margin-top: .5rem;
+  }
+
+  /* 目標ボックス */
+  .goal-box {
+    background: linear-gradient(135deg, #1f8a7a 0%, #2db09c 100%);
+    color: #fff; border-radius: 12px; padding: 1.2rem 1.3rem;
+    margin-bottom: 1rem; font-size: 14px;
+  }
+  .goal-box .goal-label { font-size: 11px; opacity: .8; margin-bottom: .3rem; letter-spacing: .08em; }
+  .goal-box .goal-text { font-weight: 700; font-size: 15px; line-height: 1.5; }
+
+  /* 配慮ボックス */
+  .caution-box {
+    border: 1.5px solid var(--rose);
+    border-radius: 8px; padding: .9rem 1rem;
+    background: var(--rose-light); margin-bottom: .7rem;
+    font-size: 13px;
+  }
+  .caution-box .c-label {
+    font-size: 11px; font-weight: 700; color: var(--rose);
+    margin-bottom: .35rem; display: flex; align-items: center; gap: .3rem;
+  }
+
+  /* フッター */
+  footer {
+    text-align: center; padding: 2rem;
+    font-size: 11px; color: var(--ink-muted);
+    border-top: 1px solid var(--border);
+  }
+
+  @media (max-width: 600px) {
+    header h1 { font-size: 1.05rem; }
+    nav { top: 72px; }
+    .act-grid { grid-template-columns: 1fr; }
+    .gaf-wrap { gap: .4rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="badge">認知症介護実践者研修　職場実習　受講番号068</div>
+  <h1>Aさんケア分析レポート</h1>
+  <div class="meta">Chat記録（2025/12/1〜2026/6/9）457件より分析　|　松倉由美子（介護支援専門員）　|　ふきのはなれ</div>
+</header>
+
+<nav>
+  <a href="#sec-voice">①職員の意見</a>
+  <a href="#sec-hypo">②仮説と検証</a>
+  <a href="#sec-gaf">③GAF推移</a>
+  <a href="#sec-act">④有効な活動</a>
+  <a href="#sec-goal">⑤目標</a>
+  <a href="#sec-care">⑥ケア計画</a>
+  <a href="#sec-caution">⑦配慮事項</a>
+</nav>
+
+<main>
+
+<!-- ①職員の意見 -->
+<section id="sec-voice">
+  <div class="section-header">
+    <div class="section-icon">💬</div>
+    <h2>① 職員からの気づき</h2>
+    <span class="sub">6/6 Chat投稿より</span>
+  </div>
+
+  <div class="voice-box">
+    <div class="v-label">気づき① 不穏のスイッチが不明</div>
+    <div class="quote">「上機嫌から急に不穏になるスイッチはなんなのか。時間帯なのか、会話内容なのか。地雷ワードがあるのか。」</div>
+    <span class="tag tag-rose">チームで未共有</span>
+    <span class="tag tag-rose">対応が統一されていない</span>
+  </div>
+
+  <div class="voice-box">
+    <div class="v-label">気づき② 自己評価の低さ・悲観的発言</div>
+    <div class="quote">「私はここにおらん方がいい」「あの人は良いのに何で私はいかんと」―傾聴・励ましをしても気持ちが上向きにならない場面がある。</div>
+    <span class="tag tag-rose">有効な声かけが不明</span>
+    <span class="tag tag-rose">他者比較が続く</span>
+  </div>
+
+  <div class="voice-box">
+    <div class="v-label">気づき③ どんな声かけが有効かわからない</div>
+    <div class="quote">「自尊心を傷つけず前向きな気持ちになれるのか、またその気持ちが少しでも持続するのか思案中」</div>
+    <span class="tag tag-amber">チームで検討中</span>
+  </div>
+</section>
+
+<!-- ②仮説と検証 -->
+<section id="sec-hypo">
+  <div class="section-header">
+    <div class="section-icon">🔍</div>
+    <h2>② ひもときシート×センター方式×Chat記録による仮説検証</h2>
+  </div>
+
+  <!-- 私が最初に立てた仮説 -->
+  <div class="card" style="margin-bottom:1rem;">
+    <div style="font-size:12px; font-weight:700; color:var(--purple); margin-bottom:.7rem; letter-spacing:.06em;">◆ 松倉が最初に立てた仮説（ひもときシートより）</div>
+    <div class="hypothesis-box" style="border-color:var(--purple); background:var(--purple-light);">
+      <div class="h-label" style="color:var(--purple);">仮説① 施錠環境による「閉じ込められ感」</div>
+      施錠された環境のなかでの生活が「閉じ込められている」という感覚を強め、帰宅願望や離設行動を助長している可能性がある。<br>
+      <span class="tag tag-purple" style="margin-top:.4rem;">環境要因</span>
+    </div>
+    <div class="hypothesis-box" style="border-color:var(--purple); background:var(--purple-light);">
+      <div class="h-label" style="color:var(--purple);">仮説② 孤独な生活歴に根ざした深い孤独感</div>
+      孤独な生活歴が積み重なっており、「誰にも必要とされていない」という深い孤独感・寂しさが行動の根底にあるのかもしれない。<br>
+      <span class="tag tag-purple" style="margin-top:.4rem;">生活歴・心理的背景</span>
+    </div>
+  </div>
+
+  <!-- フロー -->
+  <div class="flow-step">
+    <div class="flow-label">Step 1　ひもときシートで本人視点に変換</div>
+    <div style="font-size:13px;">
+      <p style="margin-bottom:.5rem;"><strong>仮説①　不穏のスイッチ</strong><br>
+      「自分が無視された・認められない」と感じる瞬間に感情が表出する<br>
+      <span class="tag tag-rose">孤独感・疎外感の爆発</span>
+      <span class="tag tag-rose">承認欲求の未充足</span></p>
+
+      <p style="margin-bottom:.5rem;"><strong>仮説②　自己評価の低さの背景</strong><br>
+      「役に立てない・ここにいる価値がない」という所属・愛着のニーズ未充足が根底にある<br>
+      <span class="tag tag-rose">Kitwoodの5つの心理的ニーズ</span>
+      <span class="tag tag-purple">孤独な生活歴の積み重ね</span></p>
+
+      <p style="margin-bottom:.5rem;"><strong>仮説③　施錠環境の影響</strong><br>
+      施錠された環境が「閉じ込められている」感覚を強め、帰宅願望・離設行動を助長している可能性<br>
+      <span class="tag tag-purple">環境要因</span></p>
+
+      <p><strong>仮説④　声かけの限界</strong><br>
+      言葉による励ましより「できた・役に立てた」体験の積み重ねが有効<br>
+      <span class="tag tag-teal">自己効力感の回復</span></p>
+    </div>
+  </div>
+
+  <div class="flow-arrow">↓</div>
+
+  <div class="flow-step">
+    <div class="flow-label">Step 2　センター方式で仮説を検証（Chat記録457件より）</div>
+    <div style="overflow-x:auto; margin-top:.5rem;">
+      <table class="tbl">
+        <thead>
+          <tr>
+            <th>センター方式</th>
+            <th>確認内容</th>
+            <th>Chat記録からの根拠（12/1〜6/9）</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="tag tag-blue">C-1-1</span><br>気持ち・感情</td>
+            <td>不穏前後の感情変化</td>
+            <td>
+              <strong>不穏になりやすい場面：</strong><br>
+              ・往診後（1/23・5/22）→ 大不穏・離設<br>
+              ・他者の面会・外出を見た後（12/8）<br>
+              ・作業が失敗した後（3/4・3/5）<br>
+              ・スタッフ同士の会話を見た時（6/7）<br>
+              ・電話できなかった後（3/30）<br>
+              ・仲良い利用者がいなくなった後（5/18）
+            </td>
+          </tr>
+          <tr>
+            <td><span class="tag tag-blue">C-1-2</span><br>行動・言動</td>
+            <td>不穏時の具体的パターン</td>
+            <td>
+              ・居室とフロアを行ったり来たり<br>
+              ・荷造り→玄関・裏口へ<br>
+              ・「私はここにおらん方がいい」<br>
+              ・泣き真似（涙は出ない）<br>
+              ・「みんなにいじめられている」<br>
+              <strong>時間帯：夕方〜夜間（16〜20時）に集中</strong>
+            </td>
+          </tr>
+          <tr>
+            <td><span class="tag tag-blue">A-1</span><br>基本情報</td>
+            <td>生活歴・環境要因</td>
+            <td>
+              ・37歳で離婚→独り暮らし（孤独な生活歴）<br>
+              ・子どもたちとは疎遠、姉も他界<br>
+              ・施設入居後、居室施錠が常態化<br>
+              ・「閉じ込められている」感覚の可能性<br>
+              ・「帰れんこと知らんやった」（6/9精神訪問）
+            </td>
+          </tr>
+          <tr>
+            <td><span class="tag tag-blue">A-3</span><br>生活歴</td>
+            <td>生活背景・強み</td>
+            <td>
+              ・紡績工場勤務→働き者の自負<br>
+              ・掃除・家事を「仕事」として誇りに思う<br>
+              ・「誰にも必要とされていない」が行動の根底
+            </td>
+          </tr>
+          <tr>
+            <td><span class="tag tag-blue">B-3</span><br>社会・対人</td>
+            <td>対人関係・トラブル傾向</td>
+            <td>
+              ・T氏・H氏への不満が繰り返し出現<br>
+              ・特定スタッフへの強い依存・執着<br>
+              ・仲良い利用者がいなくなると精神悪化<br>
+              ・面会ほぼなく孤独（精神訪問看護記録複数）
+            </td>
+          </tr>
+          <tr>
+            <td><span class="tag tag-teal">D-2</span><br>その人の力</td>
+            <td>落ち着ける状況・有効活動</td>
+            <td>
+              ・水やり・ガーデニング後に笑顔（5/19・5/26）<br>
+              ・ネイル・ハンドケアで落ち着く（6/2・6/3）<br>
+              ・買い物支援・外出で「楽しかった」（複数回）<br>
+              ・個別活動の優位性（精神訪問看護5/26）
+            </td>
+          </tr>
+          <tr>
+            <td><span class="tag tag-teal">D-4</span><br>望む暮らし</td>
+            <td>本人が求めていること</td>
+            <td>
+              ・役割がある・認められる・感謝される<br>
+              ・一対一でゆっくり話を聞いてもらえる<br>
+              ・「ここにいていい」と言ってもらえる<br>
+              ・外出・買い物などの楽しみがある
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="flow-arrow">↓</div>
+
+  <div class="flow-result">
+    <div class="flow-label">検証結果　仮説は概ね支持される</div>
+    <p>✅ 往診後・面会後など「疎外感を感じる場面」で不穏が起きている</p>
+    <p>✅ 役割活動後・外出後・「いていい」の言葉で表情が和らぐ場面が多数確認</p>
+    <p>✅ 個別活動で安定する傾向が精神訪問看護記録にも複数記録されている</p>
+    <p>✅ 孤独な生活歴・施錠環境が帰宅願望の背景として存在している</p>
+    <p style="margin-top:.6rem; font-size:12px; color:var(--ink-soft);">
+      6/9精神訪問：「帰られんこと知らんやった。あんなことしたのはあの時だけ」<br>
+      → 帰宅願望は減弱し、施設生活への適応が進みつつある可能性
+    </p>
+  </div>
+</section>
+
+<!-- ③GAF推移 -->
+<section id="sec-gaf">
+  <div class="section-header">
+    <div class="section-icon">📊</div>
+    <h2>③ GAF推移（精神状態の変化）</h2>
+  </div>
+  <div class="gaf-wrap">
+    <div class="gaf-col">
+      <div class="gaf-outer">
+        <div class="gaf-bar" style="height:70%; background:#3a6fd8;">55</div>
+      </div>
+      <div class="gaf-lbl">12月初旬<br>GAF 55</div>
+    </div>
+    <div class="gaf-col">
+      <div class="gaf-outer">
+        <div class="gaf-bar" style="height:60%; background:#5a82d8;">50</div>
+      </div>
+      <div class="gaf-lbl">2月<br>GAF 50</div>
+    </div>
+    <div class="gaf-col">
+      <div class="gaf-outer">
+        <div class="gaf-bar" style="height:45%; background:#c77a06;">40</div>
+      </div>
+      <div class="gaf-lbl">5月<br>GAF 40</div>
+    </div>
+    <div class="gaf-col">
+      <div class="gaf-outer">
+        <div class="gaf-bar" style="height:45%; background:#b83028;">40</div>
+      </div>
+      <div class="gaf-lbl">6月初旬<br>実習開始時<br>GAF 40</div>
+    </div>
+  </div>
+  <p style="font-size:11px; color:var(--ink-muted); margin-top:.5rem; padding-left:.3rem;">
+    ※4月〜5月に悪化。背景：デイ利用日変更・仲良い利用者の退所など環境変化が重なっている。
+  </p>
+</section>
+
+<!-- ④有効な活動 -->
+<section id="sec-act">
+  <div class="section-header">
+    <div class="section-icon">✨</div>
+    <h2>④ 有効な活動（Chat記録で確認済み）</h2>
+  </div>
+  <div class="act-grid">
+    <div class="act-item">
+      <div class="act-emoji">🌱</div>
+      <div class="act-title">水やり・ガーデニング</div>
+      <div class="act-note">「この花可愛いね、綺麗だね」笑顔（5/19・5/26）</div>
+    </div>
+    <div class="act-item">
+      <div class="act-emoji">💅</div>
+      <div class="act-title">ネイル・ハンドケア</div>
+      <div class="act-note">「ネイルしてもらったとよ」→笑顔・安定（6/2・6/3）</div>
+    </div>
+    <div class="act-item">
+      <div class="act-emoji">🛒</div>
+      <div class="act-title">買い物支援・外出</div>
+      <div class="act-note">「楽しかった。また行こうね」（複数回確認）</div>
+    </div>
+    <div class="act-item">
+      <div class="act-emoji">🧹</div>
+      <div class="act-title">台拭き・食事手伝い・掃除</div>
+      <div class="act-note">「仕事したから血圧がちょうどいい」笑顔（3/16）</div>
+    </div>
+    <div class="act-item">
+      <div class="act-emoji">🎨</div>
+      <div class="act-title">個別の制作活動（塗り絵・花紙）</div>
+      <div class="act-note">集中・「いつもありがとう」（複数回）</div>
+    </div>
+    <div class="act-item">
+      <div class="act-emoji">💬</div>
+      <div class="act-title">「ここにいていい」の一言</div>
+      <div class="act-note">「ずっといていいですよ」→即座に安心・笑顔（1/8）</div>
+    </div>
+  </div>
+  <div style="margin-top:.8rem; font-size:12px; color:var(--ink-soft); padding:.6rem .8rem; background:#fff; border-radius:8px; border:1px solid var(--border);">
+    📖 精神訪問看護記録5/26：「複数名での作業より個人での活動を促す方が不穏になりにくい傾向にあり」
+  </div>
+</section>
+
+<!-- ⑤目標 -->
+<section id="sec-goal">
+  <div class="section-header">
+    <div class="section-icon">🎯</div>
+    <h2>⑤ 本人の望み・目標</h2>
+  </div>
+
+  <div class="goal-box">
+    <div class="goal-label">本人の望み・目指すべき生活像</div>
+    <div class="goal-text">日々のなかで役割を持った生活が送れるようになり、<br>不安が軽減し安心して暮らしたい</div>
+  </div>
+
+  <div class="card">
+    <div style="font-size:12px; font-weight:700; color:var(--ink-soft); margin-bottom:.7rem;">ケアの目標</div>
+    <table class="tbl">
+      <tbody>
+        <tr>
+          <td style="width:110px; font-weight:700; background:var(--accent-light); color:var(--accent);">長期目標</td>
+          <td>「ここにいてよかった」と感じられる瞬間が日常の中に生まれ、施設生活への安心感が持続する</td>
+        </tr>
+        <tr>
+          <td style="font-weight:700; background:var(--teal-light); color:var(--teal);">短期目標</td>
+          <td>「ここにいてよかった」と感じられる場面を1日1回以上作り、不穏・帰宅願望の頻度を現状より減少させる</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ⑥ケア計画 -->
+<section id="sec-care">
+  <div class="section-header">
+    <div class="section-icon">📋</div>
+    <h2>⑥ ケアの実践計画</h2>
+  </div>
+
+  <div class="card" style="background:var(--accent-light); border-color:#b8ccf0; margin-bottom:1rem;">
+    <div style="font-size:13px; font-weight:700; color:var(--accent); margin-bottom:.5rem;">基本方針</div>
+    <div style="font-size:13px;">
+      センター方式を活用しAさん自身の全体像を理解し、Aさんの困りごとや悩みを理解する。
+      離設が見られる時間帯をスタッフと一緒に過ごせるように日課として取り入れる。
+      台拭きなど家事の手伝いや水やりなどの役割を持ち、自分のやりたいことができるように、
+      ゆっくりかかわる時間を設けて気持ちの把握に努める。
+    </div>
+  </div>
+
+  <div class="care-card">
+    <div class="care-head" style="background:var(--accent);">① 不穏のスイッチ特定と対応統一</div>
+    <div class="care-body">
+      <div class="care-item">
+        <div class="care-check">✓</div>
+        <div>Chat記録・不穏言動記録一覧から時間帯・直前の出来事・会話内容を分析しパターンを抽出する</div>
+      </div>
+      <div class="care-item">
+        <div class="care-check">✓</div>
+        <div>判明した地雷ワード・状況はChatで全員に周知し回避・事前対応を統一する</div>
+      </div>
+      <div class="care-item">
+        <div class="care-check">✓</div>
+        <div>
+          夕方（16〜20時）は離設が集中する時間帯。<strong>デイ利用者の帰宅時間に玄関近くにいて飛び出される場面が何度もある。</strong>この時間帯のマンツーマン対応の周知徹底が必要
+        </div>
+      </div>
+      <div style="margin-top:.6rem;">
+        <strong style="font-size:12px;">確認済みの地雷ワード・状況：</strong><br>
+        <span class="tag tag-rose">往診後</span>
+        <span class="tag tag-rose">他者の面会・外出場面</span>
+        <span class="tag tag-rose">スタッフ間の会話</span>
+        <span class="tag tag-rose">作業の失敗</span>
+        <span class="tag tag-rose">物品紛失</span>
+        <span class="tag tag-rose">デイ帰宅時間帯（夕方）</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="care-card">
+    <div class="care-head" style="background:var(--teal);">② 役割活動の継続（台拭き・水やり・掃除）</div>
+    <div class="care-body">
+      <div class="care-item">
+        <div class="care-check">✓</div>
+        <div>離設が見られる時間帯に合わせて役割活動を日課として取り入れる（夕方の台拭き・水やり等）</div>
+      </div>
+      <div class="care-item">
+        <div class="care-check">✓</div>
+        <div>
+          毎日継続し「できた」体験を積み重ねる。活動後は必ず感謝の言葉を伝える
+          <div class="care-example">「助かります」「きれいになりましたね」「Aさんが手伝ってくれると助かるよ」</div>
+        </div>
+      </div>
+      <div class="care-item">
+        <div class="care-check">✓</div>
+        <div>活動後の表情・発言をChatに記録しチームで共有する</div>
+      </div>
+      <div class="evidence">📖 精神訪問看護記録5/26：「個人での活動が不穏になりにくい傾向」</div>
+    </div>
+  </div>
+
+  <div class="care-card">
+    <div class="care-head" style="background:#5a6e9a;">③ 他者比較・自己評価低下時の声かけ統一</div>
+    <div class="care-body">
+      <div class="care-item">
+        <div class="care-check">✓</div>
+        <div>「私はここにおらん方がいい」等の発言は否定せず傾聴する</div>
+      </div>
+      <div class="care-item">
+        <div class="care-check">✓</div>
+        <div>
+          傾聴後すぐにAさん自身の「できていること・役割」に焦点を当てた声かけに切り替える
+          <div class="care-example">「台拭きしてくれて助かっています」「花がきれいになりましたね」「ずっとここにいていいんですよ」</div>
+        </div>
+      </div>
+      <div class="care-item">
+        <div class="care-check">✓</div>
+        <div>ゆっくりかかわる時間を設けて気持ちの把握に努める（一対一の関わりが有効）</div>
+      </div>
+      <div class="evidence">📖 Chat記録1/8：「ずっといていいですよ」の一言で即座に安心・笑顔が確認されている</div>
+    </div>
+  </div>
+
+  <div class="care-card">
+    <div class="care-head" style="background:#6d6d6d;">④ 対人トラブルの予防的環境調整</div>
+    <div class="care-body">
+      <div class="care-item">
+        <div class="care-check">✓</div>
+        <div>苦手な利用者（食器洗い・盛り付けを生きがいとされている利用者とのトラブルあり）との接近を避ける配慮が必要</div>
+      </div>
+      <div class="care-item">
+        <div class="care-check">✓</div>
+        <div>デイ利用日・席の工夫でトラブルを予防する</div>
+      </div>
+      <div class="care-item">
+        <div class="care-check">✓</div>
+        <div>他利用者の面会・外出場面では事前に声かけし孤独感を軽減する</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="care-card">
+    <div class="care-head" style="background:#2d6a4f;">⑤ Chatを活用したチーム連携</div>
+    <div class="care-body">
+      <div class="care-item">
+        <div class="care-check">✓</div>
+        <div>不穏言動記録一覧に実習中データを随時追記し週次でChatに共有する</div>
+      </div>
+      <div class="care-item">
+        <div class="care-check">✓</div>
+        <div>
+          有効だった声かけ・活動をChatのスレッドに一言記録する
+          <div class="care-example">例）「台拭き後に笑顔あり」「水やり後に落ち着いた」「今日は拒否。明日また試みる」</div>
+        </div>
+      </div>
+      <div class="care-item">
+        <div class="care-check">✓</div>
+        <div>週次状況まとめ（📊投稿）をChatに投稿し前週比較で変化を可視化する</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ⑦配慮事項 -->
+<section id="sec-caution">
+  <div class="section-header">
+    <div class="section-icon">⚠️</div>
+    <h2>⑦ 支援内容での配慮事項</h2>
+  </div>
+
+  <div class="caution-box">
+    <div class="c-label">⚠️ 対人トラブルの配慮</div>
+    <div style="font-size:13px;">
+      同じ施設に食器洗いや食事の盛り付けを生きがいとされている利用者がいる。その利用者とトラブルがあったため、<strong>接近しないような配慮が必要。</strong>デイ利用日・席の配置を工夫する。
+    </div>
+  </div>
+
+  <div class="caution-box">
+    <div class="c-label">⚠️ 夕方の離設リスク（最重要）</div>
+    <div style="font-size:13px;">
+      夕方デイの利用者の帰宅時間に、玄関近くにいて飛び出される場面が<strong>何度もあった。</strong>マンツーマンでスタッフがつけることが毎日ではない。<br>
+      <strong>→ この時間帯（16〜20時）の周知徹底が必要。</strong>できる限りスタッフが近くにいられるよう、この時間帯を役割活動の時間として日課に取り入れる。
+    </div>
+  </div>
+
+  <div class="card" style="font-size:13px;">
+    <div style="font-weight:700; margin-bottom:.5rem; color:var(--ink-soft);">実習スケジュール（要約）</div>
+    <table class="tbl">
+      <thead>
+        <tr><th>期間</th><th>主な内容</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>第1週<br>6/6〜6/15</td>
+          <td>管理者・Aさん・姪御様への説明・同意確認。ひもときシート共有。カンファレンス①実施。精神訪問看護師へ質問票作成</td>
+        </tr>
+        <tr>
+          <td>第2週<br>6/16〜6/25</td>
+          <td>センター方式7枚で情報整理・仮説検証。カンファレンス②。中間評価シート（別紙4）6/30 FAX提出</td>
+        </tr>
+        <tr>
+          <td>第3週<br>7/2〜7/11</td>
+          <td>ケア実践（②③④⑤）を実施。Chat記録で効果を共有。不穏言動記録を追記</td>
+        </tr>
+        <tr>
+          <td>第4週<br>7/12〜7/21</td>
+          <td>カンファレンス③（4週間評価）。実習報告書（別紙6）作成・管理者確認</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  複合型サービスふきのはなれ　介護支援専門員　松倉由美子　|　令和8年度　認知症介護実践者研修　職場実習　受講番号068
+</footer>
+
+<script>
+  // ナビのアクティブ処理
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('nav a');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navLinks.forEach(a => a.classList.remove('active'));
+        const active = document.querySelector(`nav a[href="#${e.target.id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-140px 0px -60% 0px' });
+  sections.forEach(s => observer.observe(s));
+</script>
+<div style="position:fixed;bottom:20px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:6px;">
+<a href="https://translate.google.com/translate?sl=ja&tl=ne&u=https://script.google.com/a/macros/kiccho.org/s/AKfycbynlFX1sAyRbHNgSIEgS3WC0iv2BUy4KZ1Dkm-QNMyya71O-MmFyXOF4PWWP40CAYWGvQ/exec" target="_blank" style="display:block;background:#2f5fcb;color:#fff;padding:10px 16px;border-radius:30px;font-size:13px;font-weight:700;text-decoration:none;box-shadow:0 2px 12px rgba(0,0,0,.2);text-align:center;">🌐 ネパール語で見る</a>
+<a href="https://translate.google.com/translate?sl=ja&tl=en&u=https://script.google.com/a/macros/kiccho.org/s/AKfycbynlFX1sAyRbHNgSIEgS3WC0iv2BUy4KZ1Dkm-QNMyya71O-MmFyXOF4PWWP40CAYWGvQ/exec" target="_blank" style="display:block;background:#1f8a7a;color:#fff;padding:10px 16px;border-radius:30px;font-size:13px;font-weight:700;text-decoration:none;box-shadow:0 2px 12px rgba(0,0,0,.2);text-align:center;">🌐 英語で見る</a>
+</div>
+</body>
+</html>
