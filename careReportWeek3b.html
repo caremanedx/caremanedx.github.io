@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>実習報告書 場面考察・考察方法｜認知症介護実践者研修</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Hiragino Sans', 'Noto Sans JP', sans-serif;
+      background: #f0f4f8;
+      color: #2c3e50;
+      line-height: 1.7;
+      font-size: 15px;
+    }
+    header {
+      background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+      color: white;
+      padding: 28px 20px 20px;
+      text-align: center;
+    }
+    header h1 { font-size: 1.3em; margin-bottom: 6px; }
+    header p  { font-size: 0.85em; opacity: 0.85; }
+    main { max-width: 860px; margin: 0 auto; padding: 0 16px 60px; }
+    section { margin: 28px 0; }
+    h2 {
+      font-size: 1.1em;
+      border-left: 4px solid #3498db;
+      padding: 6px 12px;
+      background: white;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 14px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+    h3 { font-size: 1em; color: #2c3e50; margin: 16px 0 8px; }
+    .result-section {
+      background: linear-gradient(135deg, #f8f9ff 0%, #e8f4fd 100%);
+      border-left: 4px solid #3498db;
+      border-radius: 0 12px 12px 0;
+      padding: 16px 20px;
+      margin: 14px 0;
+    }
+    .chat-evidence {
+      background: white;
+      border: 1px solid #dde8f5;
+      border-radius: 8px;
+      padding: 10px 14px;
+      margin: 8px 0;
+      font-size: 0.88em;
+    }
+    .chat-evidence::before {
+      content: "💬 Chat記録";
+      font-size: 0.75em;
+      color: #7f8c8d;
+      display: block;
+      margin-bottom: 4px;
+      font-weight: bold;
+    }
+    .chat-date { color: #95a5a6; font-size: 0.8em; margin-left: 6px; }
+    .eval-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 10px;
+      margin: 14px 0;
+    }
+    .eval-card {
+      background: white;
+      border-radius: 10px;
+      padding: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    }
+    .timeline-item {
+      display: flex;
+      gap: 10px;
+      margin: 8px 0;
+      align-items: flex-start;
+    }
+    .timeline-date {
+      min-width: 48px;
+      font-size: 0.78em;
+      color: #7f8c8d;
+      padding-top: 3px;
+      font-weight: bold;
+      text-align: center;
+    }
+    .timeline-content {
+      flex: 1;
+      background: white;
+      border-radius: 8px;
+      padding: 9px 13px;
+      font-size: 0.88em;
+      border-left: 3px solid #3498db;
+    }
+    .timeline-content.positive-event { border-left-color: #27ae60; }
+    .timeline-content.concern-event  { border-left-color: #e74c3c; }
+    .warn-box {
+      background: #fff8e1;
+      border-left: 4px solid #f39c12;
+      border-radius: 0 8px 8px 0;
+      padding: 12px 16px;
+      margin: 12px 0;
+      font-size: 0.9em;
+    }
+    .warn-box ul { padding-left: 18px; margin-top: 6px; }
+    .warn-box li { margin: 4px 0; }
+    .flow-item {
+      display: flex; align-items: center; gap: 8px; margin: 8px 0;
+    }
+    .flow-badge {
+      color: white; border-radius: 6px; padding: 6px 12px;
+      min-width: 130px; text-align: center; font-weight: bold;
+      font-size: 0.85em;
+    }
+    .flow-arrow { color: #7f8c8d; font-size: 1.2em; }
+    .flow-desc  { flex: 1; font-size: 0.88em; }
+    .section-divider {
+      border: none;
+      border-top: 2px dashed #dde8f5;
+      margin: 28px 0;
+    }
+    .nav-btn {
+      display: inline-block;
+      padding: 10px 24px;
+      border-radius: 24px;
+      text-decoration: none;
+      font-size: 0.95em;
+      font-weight: bold;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      margin: 6px;
+    }
+    .nav-center { text-align: center; margin: 20px 0; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>📋 認知症介護実践者研修　職場実習報告</h1>
+  <p>場面考察・3週目記録・考察方法</p>
+</header>
+
+<div class="nav-center">
+  <a href="careReport.html" class="nav-btn" style="background:linear-gradient(135deg,#2c3e50,#3498db); color:white;">
+    ← トップへ戻る
+  </a>
+  <a href="careReportWeek3.html" class="nav-btn" style="background:linear-gradient(135deg,#27ae60,#2ecc71); color:white;">
+    ← 前のページ（⑧〜⑩）
+  </a>
+  <a href="https://translate.google.com/translate?sl=ja&tl=ne&u=https://caremanedx.github.io/careReportWeek3b.html"
+     target="_blank" class="nav-btn" style="background:linear-gradient(135deg,#1a73e8,#0d47a1); color:white;">
+    🌐 ネパール語で見る
+  </a>
+</div>
+
+<main>
+
+<!-- ⑪ 場面考察 -->
+<section id="sec-case">
+  <h2>🔎 ⑪ 場面考察：6/27〜28 離設・荷造り場面</h2>
+
+  <div class="result-section">
+    <h3>📋 何が起きたか</h3>
+    <div class="timeline-item">
+      <div class="timeline-date">6/27<br>18:42</div>
+      <div class="timeline-content concern-event">「行かせて」と繰り返しながらキッチン横から外へ出る。付き添い説得しフロアで傾聴。</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">6/27<br>19:05</div>
+      <div class="timeline-content concern-event">「飴玉を欲しいと思ってもらったわけじゃない」「塗り絵をしたらいかんって言われた。Mさんから頼まれたから手伝っただけやのに…」と訴え繰り返す。10分傾聴後帰室。</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">6/28<br>早朝</div>
+      <div class="timeline-content concern-event">精神訪問看護訪問時、バッグを持ち荷造り状態。「飴をもらったことを怒られた・塗り絵をしたらいかんと言われた」と繰り返し訴え。</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">6/28<br>午前</div>
+      <div class="timeline-content positive-event">「じゃあ、おっていいね、あの人も言いよったけん」と笑顔で落ち着く。朝食の卵焼きが美味しかったと話題が変わる。</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">6/29</div>
+      <div class="timeline-content positive-event">食器洗い・台拭きをスタッフと一緒に行い「ありがとう」の言葉に笑顔。落ち着いて過ごす。</div>
+    </div>
+  </div>
+
+  <div class="result-section">
+    <h3>💡 考察</h3>
+    <p>この場面の背景には、<strong>「自分は悪いことをしていないのに責められた」という強い不公平感</strong>があったと考えられる。良かれと思った行動（塗り絵を手伝う・飴をもらう）を咎められたと感じた瞬間、「ここにいる価値がない→出ていかなければ」という思考に直結したと推察される。</p>
+    <p>Kitwoodの心理的ニーズの観点からみると、「認められなかった」という<strong>承認欲求の未充足</strong>が引き金となり離設行動に発展した。これはひもときシートで確認した<strong>「自分が無視された・認められない瞬間に不穏が表出する」</strong>という仮説を裏付ける場面でもある。</p>
+    <div class="chat-evidence">
+      6/23　「帰れて言われるといかんけん（帰れと言われたら困るから）」と笑顔で返される。
+      <span class="chat-date">→ ここにいるためには役に立たなければならないという強い不安が根底にある</span>
+    </div>
+    <div class="warn-box">
+      <strong>⚠️ 対応のポイント</strong>
+      <ul>
+        <li>事実確認より先に<strong>「自分は悪いことをしていない」という気持ちを受け止める</strong></li>
+        <li>「そんなことないですよ」の否定は逆効果。傾聴→「ここにいていいですよ」の順で関わる</li>
+        <li>落ち着いた後は役割活動へ誘導し「できた」体験で気持ちを切り替える（6/29の回復が好例）</li>
+        <li>物品・菓子のやり取りが不穏の誘因になりやすいため事前に丁寧に周知する</li>
+      </ul>
+    </div>
+    <p style="font-size:0.88em; color:#555; margin-top:10px;">この場面は<strong>Chat記録があったからこそ翌日以降の対応に活かせた事例</strong>でもある。</p>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- ⑫ 7月の記録 -->
+<section id="sec-july">
+  <h2>📅 ⑫ 3週目の記録（7/1〜7/3）</h2>
+
+  <div class="result-section">
+    <h3>📋 Chat記録より</h3>
+    <div class="timeline-item">
+      <div class="timeline-date">7/1<br>16:40</div>
+      <div class="timeline-content concern-event">「私の味方がいない」「みんないじめる」「デイサービスの行き帰りも雨」と訴え繰り返す。その後正面玄関・スタッフ出入り口へ複数回離設企図。離設注意。</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">7/1<br>18:20</div>
+      <div class="timeline-content positive-event">居室で傾聴。「また眠前薬の時に来ますね」の声かけに笑顔が見られる。</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">7/2<br>17:00</div>
+      <div class="timeline-content concern-event">「Gパンが戻ってきとらん」と立腹気味。洗濯業者の説明で帰室。夜は眠前薬時に穏やか。</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">7/3<br>早朝</div>
+      <div class="timeline-content concern-event">「ズボンがない、一本しかない」と険しい表情。声かけに抵抗あり不満を抱えたまま就寝。</div>
+    </div>
+  </div>
+
+  <div class="result-section">
+    <h3>💡 考察</h3>
+    <p>7/1の離設企図は、<strong>物品（衣類）の紛失感・雨天による活動制限・孤独感</strong>が重なったタイミングで発生している。「私の味方がいない」「みんないじめる」という訴えは、6/27〜28と同様に<strong>承認欲求の未充足と疎外感</strong>が根底にあると考えられる。</p>
+    <p>7/2〜3にかけてのズボン紛失への執着は、<strong>物品の不在が「自分の居場所が脅かされる」という不安に直結しやすい</strong>Aさんの特性を示している。Chat記録で「鍵・お菓子の紛失」が過去にも不穏の誘因となっていたことと一致する。</p>
+    <div class="warn-box">
+      <strong>⚠️ 対応のポイント</strong>
+      <ul>
+        <li>物品紛失の訴えは事実確認より先に<strong>「大切にしますね」と気持ちを受け止める</strong></li>
+        <li>雨天・活動制限の日は室内での役割活動（台拭き・塗り絵等）を早めに提供する</li>
+        <li>「また来ますね」など<strong>次の関わりを予告する声かけ</strong>が安心感につながっている（7/1 18:20の笑顔）</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- ⑬ 考察方法 -->
+<section id="sec-method">
+  <h2>🧠 ⑬ 考察方法について</h2>
+  <p>この実習では、以下の3つのツールを組み合わせてAさんの行動の背景を分析しています。</p>
+
+  <div class="eval-grid">
+    <div class="eval-card">
+      <div style="font-weight:bold; color:#2c3e50; margin-bottom:6px;">🔍 ひもときシート</div>
+      <p style="font-size:0.83em; color:#555; margin:0;">「なぜこの行動をするのか」を可視化する要因分析ツール。「私たちの視点」から「本人はどうしたいのか」という本人視点へ変換するプロセスを整理し、仮説を立てる。</p>
+    </div>
+    <div class="eval-card">
+      <div style="font-weight:bold; color:#2c3e50; margin-bottom:6px;">📋 センター方式</div>
+      <p style="font-size:0.83em; color:#555; margin:0;">仮説を多角的な情報収集で検証するアセスメントツール。A-1・B-3・C-1・D-2等のシートを用いて、仮説が事実かどうかを確認していく。</p>
+    </div>
+    <div class="eval-card">
+      <div style="font-weight:bold; color:#2c3e50; margin-bottom:6px;">💬 Chat記録分析</div>
+      <p style="font-size:0.83em; color:#555; margin:0;">日々の介護記録を時系列で分析し、不穏の前後に何が起きていたかを客観的なデータとして把握。「いつ・どんな状況で・どう変化したか」をチームで共有する。</p>
+    </div>
+  </div>
+
+  <div class="result-section">
+    <h3>🔄 3つのツールの連携</h3>
+    <div style="background:white; border-radius:10px; padding:14px;">
+      <div class="flow-item">
+        <div class="flow-badge" style="background:#3498db;">Chat記録を分析</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-desc">「夕方に不穏が多い」「役割活動後は安定」などのパターンを発見</div>
+      </div>
+      <div class="flow-item">
+        <div class="flow-badge" style="background:#9b59b6;">ひもときシート</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-desc">「閉じ込められ感・孤独感・承認欲求の未充足が背景では？」と仮説を立てる</div>
+      </div>
+      <div class="flow-item">
+        <div class="flow-badge" style="background:#27ae60;">センター方式</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-desc">生活歴・本人の言葉・24時間記録から仮説を検証・深める</div>
+      </div>
+      <div class="flow-item">
+        <div class="flow-badge" style="background:#e67e22;">ケア実践計画</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-desc">分析をもとに「役割活動の日課化・声かけ統一・夕方の関わり」を計画・チームで共有</div>
+      </div>
+      <div class="flow-item">
+        <div class="flow-badge" style="background:#e74c3c;">実践→記録→共有</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-desc">Chatへの記録投稿でチームがリアルタイムに情報共有し、計画を随時見直す</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="result-section">
+    <h3>📖 Kitwoodのパーソン・センタード・ケアとの関連</h3>
+    <p>本実習の考察はKitwoodが提唱した<strong>「5つの心理的ニーズ」</strong>を枠組みとして活用しています。</p>
+    <div class="eval-grid">
+      <div class="eval-card">
+        <div style="font-weight:bold; margin-bottom:4px;">❤️ 愛着</div>
+        <div style="font-size:0.82em; color:#555;">「あなたに必要とされたい」→特定スタッフへの依存に表れる</div>
+      </div>
+      <div class="eval-card">
+        <div style="font-weight:bold; margin-bottom:4px;">🤝 結びつき</div>
+        <div style="font-size:0.82em; color:#555;">仲の良い利用者の退所・面会場面での疎外感が不穏のスイッチになっている</div>
+      </div>
+      <div class="eval-card">
+        <div style="font-weight:bold; margin-bottom:4px;">🙋 携わること</div>
+        <div style="font-size:0.82em; color:#555;">台拭き・水やり・塗り絵など「自分が役立てる」活動が精神的安定に直結</div>
+      </div>
+      <div class="eval-card">
+        <div style="font-weight:bold; margin-bottom:4px;">🌟 自分らしくあること</div>
+        <div style="font-size:0.82em; color:#555;">「良かれと思った行動を咎められた」と感じた時に自己否定が強まり離設行動に発展</div>
+      </div>
+      <div class="eval-card">
+        <div style="font-weight:bold; margin-bottom:4px;">🏠 くつろぎ</div>
+        <div style="font-size:0.82em; color:#555;">「ここにいていいですよ」の声かけ・役割活動後の感謝の言葉が安心感を生む</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<div class="nav-center" style="padding-bottom:40px;">
+  <a href="careReport.html" class="nav-btn" style="background:linear-gradient(135deg,#2c3e50,#3498db); color:white;">
+    ← トップへ戻る
+  </a>
+  <a href="careReportWeek3.html" class="nav-btn" style="background:linear-gradient(135deg,#27ae60,#2ecc71); color:white;">
+    ← 前のページ（⑧〜⑩）
+  </a>
+</div>
+
+<footer style="text-align:center; padding:20px; font-size:0.8em; color:#aaa;">
+  令和8年度 認知症介護実践者研修<br>
+  本ページは実習中の学びの共有を目的として作成しています。
+</footer>
+
+</body>
+</html>
