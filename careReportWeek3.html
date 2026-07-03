@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>実習報告書 3・4週目｜認知症介護実践者研修</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Hiragino Sans', 'Noto Sans JP', sans-serif;
+      background: #f0f4f8;
+      color: #2c3e50;
+      line-height: 1.7;
+      font-size: 15px;
+    }
+    header {
+      background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+      color: white;
+      padding: 28px 20px 20px;
+      text-align: center;
+    }
+    header h1 { font-size: 1.3em; margin-bottom: 6px; }
+    header p  { font-size: 0.85em; opacity: 0.85; }
+    .back-link {
+      display: inline-block;
+      margin: 14px 20px;
+      color: #3498db;
+      text-decoration: none;
+      font-size: 0.9em;
+    }
+    .back-link::before { content: "← "; }
+    main { max-width: 860px; margin: 0 auto; padding: 0 16px 60px; }
+    section { margin: 28px 0; }
+    h2 {
+      font-size: 1.1em;
+      border-left: 4px solid #3498db;
+      padding: 6px 12px;
+      background: white;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 14px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+    h3 { font-size: 1em; color: #2c3e50; margin: 16px 0 8px; }
+
+    .new-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+      color: white;
+      font-size: 0.7em;
+      padding: 2px 8px;
+      border-radius: 20px;
+      margin-left: 8px;
+      vertical-align: middle;
+      font-weight: bold;
+    }
+    .result-section {
+      background: linear-gradient(135deg, #f8f9ff 0%, #e8f4fd 100%);
+      border-left: 4px solid #3498db;
+      border-radius: 0 12px 12px 0;
+      padding: 16px 20px;
+      margin: 14px 0;
+    }
+    .chat-evidence {
+      background: white;
+      border: 1px solid #dde8f5;
+      border-radius: 8px;
+      padding: 10px 14px;
+      margin: 8px 0;
+      font-size: 0.88em;
+    }
+    .chat-evidence::before {
+      content: "💬 Chat記録";
+      font-size: 0.75em;
+      color: #7f8c8d;
+      display: block;
+      margin-bottom: 4px;
+      font-weight: bold;
+    }
+    .chat-date { color: #95a5a6; font-size: 0.8em; margin-left: 6px; }
+    .eval-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 10px;
+      margin: 14px 0;
+    }
+    .eval-card {
+      background: white;
+      border-radius: 10px;
+      padding: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    }
+    .eval-label { font-size: 0.8em; color: #7f8c8d; margin-bottom: 4px; }
+    .eval-value { font-size: 1.4em; font-weight: bold; color: #2c3e50; }
+    .eval-change { font-size: 0.78em; margin-top: 4px; }
+    .positive { color: #27ae60; }
+    .neutral  { color: #f39c12; }
+    .timeline-item {
+      display: flex;
+      gap: 10px;
+      margin: 8px 0;
+      align-items: flex-start;
+    }
+    .timeline-date {
+      min-width: 48px;
+      font-size: 0.78em;
+      color: #7f8c8d;
+      padding-top: 3px;
+      font-weight: bold;
+      text-align: center;
+    }
+    .timeline-content {
+      flex: 1;
+      background: white;
+      border-radius: 8px;
+      padding: 9px 13px;
+      font-size: 0.88em;
+      border-left: 3px solid #3498db;
+    }
+    .timeline-content.positive-event { border-left-color: #27ae60; }
+    .timeline-content.concern-event  { border-left-color: #e74c3c; }
+    .summary-box {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border-radius: 12px;
+      padding: 18px 20px;
+      margin: 16px 0;
+    }
+    .summary-box h3 { color: white; margin-top: 0; }
+    .summary-box ul { padding-left: 18px; }
+    .summary-box li { margin: 6px 0; line-height: 1.6; }
+    .gaf-bar { display: flex; align-items: center; gap: 10px; margin: 8px 0; }
+    .gaf-bar-label { min-width: 80px; font-size: 0.83em; color: #555; }
+    .gaf-bar-track { flex: 1; height: 18px; background: #eee; border-radius: 9px; overflow: hidden; }
+    .gaf-bar-fill  { height: 100%; border-radius: 9px; padding-left: 8px; font-size: 0.74em; color: white; font-weight: bold; display:flex; align-items:center; }
+    .warn-box {
+      background: #fff8e1;
+      border-left: 4px solid #f39c12;
+      border-radius: 0 8px 8px 0;
+      padding: 12px 16px;
+      margin: 12px 0;
+      font-size: 0.9em;
+    }
+    .warn-box ul { padding-left: 18px; margin-top: 6px; }
+    .warn-box li { margin: 4px 0; }
+    .flow-item {
+      display: flex; align-items: center; gap: 8px; margin: 8px 0;
+    }
+    .flow-badge {
+      color: white; border-radius: 6px; padding: 6px 12px;
+      min-width: 130px; text-align: center; font-weight: bold;
+      font-size: 0.85em;
+    }
+    .flow-arrow { color: #7f8c8d; font-size: 1.2em; }
+    .flow-desc  { flex: 1; font-size: 0.88em; }
+    .section-divider {
+      border: none;
+      border-top: 2px dashed #dde8f5;
+      margin: 28px 0;
+    }
+    .translate-btn {
+      display: block;
+      text-align: center;
+      margin: 16px 0;
+    }
+    .translate-btn a {
+      display: inline-block;
+      background: linear-gradient(135deg,#1a73e8,#0d47a1);
+      color: white;
+      padding: 10px 24px;
+      border-radius: 24px;
+      text-decoration: none;
+      font-size: 0.95em;
+      font-weight: bold;
+      box-shadow: 0 2px 8px rgba(26,115,232,0.3);
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>📋 認知症介護実践者研修　職場実習報告</h1>
+  
+  <p>実習期間：令和8年6月6日〜7月21日（40日間）</p>
+</header>
+
+<a class="back-link" href="careReport.html">実習報告書トップへ戻る</a>
+
+<div class="translate-btn">
+  <a href="https://translate.google.com/translate?sl=ja&tl=ne&u=https://caremanedx.github.io/careReportWeek3.html"
+     target="_blank">
+    🌐 ネパール語で見る／नेपालीमा हेर्नुहोस्
+  </a>
+</div>
+
+<main>
+
+<!-- ⑧ 実習の結果 -->
+<section id="sec-result">
+  <h2>📊 ⑧ 実習の結果（6/6〜6/30 Chat記録より）</h2>
+
+  <div class="result-section">
+    <h3>🙋 利用者に関して</h3>
+    <p>ひもときシート・センター方式による仮説検証の結果、施錠環境による閉じ込められ感と孤独な生活歴が帰宅願望の背景にあることを確認。Chat記録の分析から、<strong>役割活動・個別の関わり・「ここにいていい」の声かけ</strong>が精神的安定に有効なことが示された。</p>
+    <p>重度認知症患者デイケアが6月24日に開始。当日は「楽しかった」と帰宅時に明るい表情が確認され、6月26日の精神訪問看護記録では「あんな良いところがあったのね！」と話す場面が記録された。</p>
+
+    <div class="timeline-item">
+      <div class="timeline-date">6/7</div>
+      <div class="timeline-content concern-event">スタッフ同士の会話を見て不穏・泣き真似→頓服使用。不穏スイッチの一つとして確認。</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">6/13</div>
+      <div class="timeline-content positive-event">「今日は楽しく過ごせましたか？」に笑顔で「うん」と返答。眠前も穏やか。</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">6/14</div>
+      <div class="timeline-content positive-event">水やり・台拭き・ペットボトルラベル取り・塗り絵を自発的に実施。御礼を述べると落ち着き継続。</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">6/18</div>
+      <div class="timeline-content positive-event">塗り絵に1時間集中。職員との作業でも落ち着き、笑顔あり。</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">6/19</div>
+      <div class="timeline-content positive-event">往診後も風鈴作りで安定。「出て行きたくない…寂しいのかな」と自分の気持ちを言語化。</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">6/20</div>
+      <div class="timeline-content positive-event">塗り絵中「こんなことができると思わなかった」と笑顔。雨で水やりできなくても感情を荒立てず受け入れる。</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">6/24</div>
+      <div class="timeline-content positive-event">重度認知症患者デイケア初回利用。「楽しかった」と帰宅時に明るい表情。精神訪問看護「環境の変化がプラスになっている」と評価。</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">6/26</div>
+      <div class="timeline-content positive-event">「私だけ違うところへ行くことになった。あんな良いところが！」と嬉しそうに繰り返し話す。</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">6/29</div>
+      <div class="timeline-content positive-event">食器洗い・台拭きをスタッフと一緒に行い「ありがとう」の言葉に笑顔。</div>
+    </div>
+  </div>
+
+  <div class="result-section">
+    <h3>👥 自己やチームの気づき・変化</h3>
+    <p>Google Chatを実習に活用したことで、不穏前後の状況が記録として蓄積され、パターン分析が可能になった。ひもときシート・センター方式の枠組みを学びとしてチームに共有したことで、「なぜこの行動をするのか」という本人視点での振り返りが生まれ始めている。</p>
+    <p>役割活動の提供・感謝の声かけ・夕方のこまめな声かけについて、実習で学んだ内容をChatや朝の申し送りを通じてチームに共有しながら取り組みを進めている。</p>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- ⑨ 客観的評価 -->
+<section id="sec-eval">
+  <h2>📈 ⑨ 客観的評価</h2>
+
+  <h3>GAF推移（精神状態スコア）</h3>
+  <div style="margin:14px 0; background:white; border-radius:10px; padding:14px; box-shadow:0 1px 4px rgba(0,0,0,0.06);">
+    <div class="gaf-bar">
+      <div class="gaf-bar-label">12月初旬</div>
+      <div class="gaf-bar-track"><div class="gaf-bar-fill" style="width:55%;background:linear-gradient(90deg,#27ae60,#2ecc71);">55点</div></div>
+    </div>
+    <div class="gaf-bar">
+      <div class="gaf-bar-label">2月</div>
+      <div class="gaf-bar-track"><div class="gaf-bar-fill" style="width:50%;background:linear-gradient(90deg,#f39c12,#f1c40f);">50点</div></div>
+    </div>
+    <div class="gaf-bar">
+      <div class="gaf-bar-label">5月</div>
+      <div class="gaf-bar-track"><div class="gaf-bar-fill" style="width:40%;background:linear-gradient(90deg,#e74c3c,#c0392b);">40点</div></div>
+    </div>
+    <div class="gaf-bar">
+      <div class="gaf-bar-label">6月初旬</div>
+      <div class="gaf-bar-track"><div class="gaf-bar-fill" style="width:40%;background:linear-gradient(90deg,#e74c3c,#c0392b);">40点（実習開始時）</div></div>
+    </div>
+    <div class="gaf-bar">
+      <div class="gaf-bar-label">6月下旬</div>
+      <div class="gaf-bar-track"><div class="gaf-bar-fill" style="width:45%;background:linear-gradient(90deg,#f39c12,#e67e22);">40〜45点（安定傾向）</div></div>
+    </div>
+  </div>
+  <p style="font-size:0.82em; color:#7f8c8d;">※6月下旬の推計は精神訪問看護記録「精神状態は非常に安定」「看護師への信頼関係も良好」の記述より。</p>
+
+  <h3>主な変化の指標（Chat記録より）</h3>
+  <div class="eval-grid">
+    <div class="eval-card">
+      <div class="eval-label">頓服使用</div>
+      <div class="eval-value neutral">6/7のみ</div>
+      <div class="eval-change positive">→ 中旬以降使用記録なし</div>
+    </div>
+    <div class="eval-card">
+      <div class="eval-label">役割活動の記録</div>
+      <div class="eval-value positive">8回以上</div>
+      <div class="eval-change positive">→ 水やり・台拭き・塗り絵等</div>
+    </div>
+    <div class="eval-card">
+      <div class="eval-label">重度認知症患者デイケア</div>
+      <div class="eval-value positive">6/24開始</div>
+      <div class="eval-change positive">→「楽しかった」「良いところ！」</div>
+    </div>
+    <div class="eval-card">
+      <div class="eval-label">往診後の不穏</div>
+      <div class="eval-value neutral">6/19</div>
+      <div class="eval-change positive">→ 風鈴作りで安定（軽度）</div>
+    </div>
+  </div>
+
+  <div class="result-section">
+    <h3>🔍 Chat記録が示すケアの有効性</h3>
+    <div class="chat-evidence">
+      6/20　塗り絵中「こんなことができると思わなかった。先生がおるけんね、一緒にしよると。」笑顔で他者と作業。雨で水やりできなくても「仕方ないね」と受け入れる。
+      <span class="chat-date">精神訪問看護記録</span>
+    </div>
+    <div class="chat-evidence">
+      6/23　前日の塗り絵が居室に飾られており「飾っていると1人でも寂しくないし、この時は楽しかった」と発言。精神状態安定。
+      <span class="chat-date">精神訪問看護記録</span>
+    </div>
+    <div class="chat-evidence">
+      6/26　「私だけ違うところへ行くことになった。あんな良いところがあったのね！お弁当が美味しくてビックリした。」繰り返し話す。普段に比べ支離滅裂でない。
+      <span class="chat-date">精神訪問看護記録</span>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- ⑩ まとめ -->
+<section id="sec-summary">
+  <h2>📝 ⑩ まとめ・今後の課題</h2>
+
+  <div class="summary-box">
+    <h3>✅ 実習を通じて確認できたこと</h3>
+    <ul>
+      <li>役割活動後の「ありがとう」「助かります」の声かけが精神的安定につながることをChat記録で繰り返し確認できた</li>
+      <li>重度認知症患者デイケア開始により、水曜日の日課が生まれ「特別感」が本人の自己肯定感につながっている</li>
+      <li>個別の関わりが集団場面よりも安定をもたらしやすいことを精神訪問看護記録と日常記録の両面から確認した</li>
+      <li>Chat記録をチームで活用することで、有効な声かけ・不穏スイッチの情報がリアルタイムで共有されるようになった</li>
+    </ul>
+  </div>
+
+  <div class="result-section">
+    <h3>🔄 今後に向けて</h3>
+    <p>重度認知症患者デイケア開始後の効果を継続的に観察し、生活リズムの変化や精神的安定への影響を評価していく。役割活動の日課化や声かけの方向性については、実習を通じて学んだことをチームに共有しながら取り組みを進めている。カンファレンスやChatを通じた情報共有を継続し、学びをケアの実践につなげていきたい。</p>
+    <p>実習を通して、本人の言動の背景にある思いを丁寧に読み解く姿勢の重要性を改めて実感した。今後もパーソン・センタード・ケアの視点を日々の実践に活かし、Aさんが「ここにいてよかった」と感じられる場面を一つでも多く作り続けていきたい。</p>
+  </div>
+</section>
+
+
+<div style="text-align:center; margin:30px 0;">
+  <a href="careReportWeek3b.html"
+     style="display:inline-block; background:linear-gradient(135deg,#e67e22,#e74c3c); color:white;
+            padding:12px 28px; border-radius:24px; text-decoration:none; font-size:1em;
+            font-weight:bold; box-shadow:0 2px 8px rgba(0,0,0,0.2); margin:6px;">
+    場面考察・考察方法を見る →
+  </a>
+  <a href="careReport.html"
+     style="display:inline-block; background:linear-gradient(135deg,#2c3e50,#3498db); color:white;
+            padding:12px 28px; border-radius:24px; text-decoration:none; font-size:1em;
+            font-weight:bold; box-shadow:0 2px 8px rgba(0,0,0,0.2); margin:6px;">
+    ← トップへ戻る
+  </a>
+</div>
+
+</main>
+
+<footer style="text-align:center; padding:20px; font-size:0.8em; color:#aaa;">
+  令和8年度 認知症介護実践者研修<br>
+  本ページは実習中の学びの共有を目的として作成しています。
+</footer>
+
+</body>
+</html>
