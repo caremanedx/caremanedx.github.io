@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ケア実践計画書</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Hiragino Sans', 'Noto Sans JP', sans-serif;
+      background: #f0f4f8;
+      color: #2c3e50;
+      line-height: 1.7;
+      font-size: 15px;
+    }
+    header {
+      background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    header h1 { font-size: 1.3em; margin-bottom: 4px; }
+    header p  { font-size: 0.82em; opacity: 0.85; }
+    main { max-width: 720px; margin: 0 auto; padding: 16px 16px 60px; }
+    section { margin: 16px 0; }
+
+    /* セクションラベル */
+    .sec-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.82em;
+      font-weight: bold;
+      color: #7f8c8d;
+      margin-bottom: 6px;
+      letter-spacing: 0.05em;
+    }
+    .sec-label::before {
+      content: '';
+      display: block;
+      width: 4px;
+      height: 16px;
+      background: #3498db;
+      border-radius: 2px;
+    }
+
+    /* 本人の望む生活 */
+    .goal-box {
+      background: white;
+      border-radius: 12px;
+      border: 0.5px solid #dde8f5;
+      padding: 14px 16px;
+      margin: 6px 0;
+    }
+    .goal-main {
+      font-size: 0.95em;
+      font-weight: bold;
+      color: #2c3e50;
+      margin-bottom: 8px;
+      line-height: 1.6;
+    }
+    .goal-sub {
+      font-size: 0.85em;
+      color: #555;
+      padding-left: 12px;
+      border-left: 2px solid #b5d4f4;
+      line-height: 1.8;
+    }
+
+    /* 短期目標 */
+    .target-box {
+      background: linear-gradient(135deg, #eaf4fb, #f0f7ff);
+      border: 1px solid #b5d4f4;
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin: 6px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .target-text {
+      font-size: 0.92em;
+      font-weight: bold;
+      color: #185fa5;
+      line-height: 1.6;
+    }
+    .target-period {
+      background: #185fa5;
+      color: white;
+      font-size: 0.75em;
+      padding: 4px 10px;
+      border-radius: 20px;
+      white-space: nowrap;
+      align-self: center;
+    }
+
+    /* 3週目バナー */
+    .week3-banner {
+      background: linear-gradient(135deg, #f39c12, #e67e22);
+      color: white;
+      border-radius: 10px;
+      padding: 10px 16px;
+      font-size: 0.88em;
+      font-weight: bold;
+      margin: 6px 0;
+      text-align: center;
+    }
+
+    /* 最重要バッジ */
+    .badge-critical {
+      display: inline-block;
+      background: #e74c3c;
+      color: white;
+      font-size: 0.72em;
+      font-weight: bold;
+      padding: 2px 10px;
+      border-radius: 20px;
+      margin-right: 6px;
+      vertical-align: middle;
+    }
+
+    /* 場面カード */
+    .scene-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+      margin: 6px 0;
+    }
+    .scene-critical {
+      background: #fdf0ef;
+      border: 2px solid #e74c3c;
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-size: 0.88em;
+    }
+    .scene-critical-title {
+      font-weight: bold;
+      color: #c0392b;
+      margin-bottom: 4px;
+    }
+    .scene-others {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 8px;
+    }
+    .scene-item {
+      background: white;
+      border: 0.5px solid #f5b7b1;
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-size: 0.85em;
+      color: #2c3e50;
+    }
+    .scene-num {
+      font-size: 0.72em;
+      color: #e74c3c;
+      font-weight: bold;
+      margin-bottom: 3px;
+    }
+
+    /* ケアの方法ブロック */
+    .method-block {
+      background: white;
+      border-radius: 12px;
+      border: 0.5px solid #dde8f5;
+      overflow: hidden;
+      margin: 6px 0;
+    }
+    .method-block-title {
+      background: #fdf0ef;
+      padding: 8px 14px;
+      font-size: 0.85em;
+      font-weight: bold;
+      color: #c0392b;
+      border-bottom: 1px solid #f5b7b1;
+    }
+    .method-block-body {
+      padding: 12px 14px;
+    }
+    .method-block-body ul {
+      padding-left: 18px;
+      font-size: 0.88em;
+    }
+    .method-block-body li { margin: 5px 0; }
+    .ok  { color: #27ae60; }
+    .ng  { color: #c0392b; }
+
+    /* 注記 */
+    .note-mark {
+      font-size: 0.72em;
+      color: #3498db;
+      vertical-align: super;
+    }
+
+    /* Chat */
+    .chat-box {
+      background: #eaf4fb;
+      border: 0.5px solid #b5d4f4;
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin: 6px 0;
+    }
+    .chat-title {
+      font-size: 0.92em;
+      font-weight: bold;
+      color: #185fa5;
+      margin-bottom: 8px;
+    }
+    .chat-box ul {
+      padding-left: 18px;
+      font-size: 0.85em;
+      color: #185fa5;
+    }
+    .chat-box li { margin: 3px 0; }
+
+    .divider {
+      border: none;
+      border-top: 2px dashed #dde8f5;
+      margin: 24px 0;
+    }
+
+    /* 注釈 */
+    .note-section {
+      background: white;
+      border-radius: 12px;
+      border: 0.5px solid #dde8f5;
+      padding: 16px 20px;
+      font-size: 0.86em;
+    }
+    .note-section h3 {
+      font-size: 0.9em;
+      font-weight: bold;
+      margin: 12px 0 4px;
+    }
+    .note-section h3:first-child { margin-top: 0; }
+    .note-section ul { padding-left: 18px; }
+    .note-section li { margin: 4px 0; }
+    .ref-list { padding-left: 18px; font-size: 0.83em; color: #555; }
+
+    .back-link {
+      display: block;
+      text-align: center;
+      margin: 14px 0;
+    }
+    .back-link a {
+      display: inline-block;
+      background: linear-gradient(135deg,#2c3e50,#3498db);
+      color: white;
+      padding: 10px 24px;
+      border-radius: 24px;
+      text-decoration: none;
+      font-size: 0.9em;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>📋 ケア実践計画書</h1>
+  <p>認知症介護実践者研修　実習気づきの共有</p>
+</header>
+
+<div style="text-align:center; margin:10px 0;">
+  <a href="https://translate.google.com/translate?sl=ja&tl=ne&u=https://caremanedx.github.io/careNotice.html" target="_blank" style="display:inline-block; background:linear-gradient(135deg,#1a73e8,#0d47a1); color:white; padding:10px 24px; border-radius:24px; text-decoration:none; font-size:0.9em; font-weight:bold; box-shadow:0 2px 8px rgba(26,115,232,0.3);">🌐 ネパール語で見る／नेपालीमा हेर्नुहोस्</a>
+</div>
+<div class="back-link">
+  <a href="careReport.html">← 実習報告書トップへ</a>
+</div>
+
+<main>
+
+<!-- 本人の望む生活 -->
+<section>
+  <div class="sec-label">本人の望む生活（生活全般の解決すべき課題）</div>
+  <div class="goal-box">
+    <div class="goal-main">日々のなかで役割を持った生活が送れるようになり、不安が軽減し安心して暮らしたい</div>
+    <div class="goal-sub">
+      ・「ここにいてよかった」と感じられる瞬間を日常のなかで持てるようになる<br>
+      ・孤独感・疎外感を軽減し、施設での生活に安心感を持てるようになる
+    </div>
+  </div>
+</section>
+
+<!-- 短期目標 -->
+<section>
+  <div class="sec-label">日々の暮らしの目標（短期目標）</div>
+  <div class="target-box">
+    <div class="target-text">自分のやりたいことができるようになり、<br>ここにいてよかったと感じることができる</div>
+    <div class="target-period">6/6〜7/21</div>
+  </div>
+</section>
+
+<!-- 3週目バナー -->
+<div class="week3-banner">
+  🎯 3週目：計画③「不穏・離設への対応と予防」を重点的に実践する
+</div>
+
+<!-- ケア項目 -->
+<section>
+  <div class="sec-label">ケア項目</div>
+  <div class="goal-box" style="font-size:0.95em; font-weight:bold;">
+    <span class="badge-critical">最重要</span>③ 不穏・離設への対応と予防
+  </div>
+</section>
+
+<!-- 支援が必要な場面 -->
+<section>
+  <div class="sec-label">支援が必要な場面</div>
+  <div class="scene-grid">
+    <div class="scene-critical">
+      <div class="scene-critical-title">⚠️ 最重要場面</div>
+      自分がデイを利用しない日のデイ終了時間帯<br>
+      <span style="font-size:0.85em; color:#888;">（他の利用者が出入りする時間）</span>
+    </div>
+    <div class="scene-others">
+      <div class="scene-item">
+        <div class="scene-num">②</div>
+        「出ていけと言われた」と荷造りしている時
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">③</div>
+        往診後
+      </div>
+      <div class="scene-item">
+        <div class="scene-num">④</div>
+        他者の面会・外出場面
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 具体的なケアの方法 -->
+<section>
+  <div class="sec-label">具体的なケアの方法</div>
+  <div class="method-block">
+    <div class="method-block-title">⚠️ 【最重要】デイ終了時間帯</div>
+    <div class="method-block-body">
+      <ul>
+        <li>玄関付近の動向を必ず把握する</li>
+        <li>可能な場合はこの時間帯に役割活動を提供し、注意を活動に向ける</li>
+        <li>不穏時はそばに寄り添い傾聴。落ち着いたら役割活動へ誘導する</li>
+        <li>不穏前後の状況をChatの不穏言動記録一覧に追記する</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 手順と注意点 -->
+<section>
+  <div class="sec-label">支援・援助するための手順と注意点</div>
+
+  <div class="method-block">
+    <div class="method-block-title">デイ終了時間帯（最重要）</div>
+    <div class="method-block-body">
+      <ul>
+        <li>Aさんがデイを利用しない日のデイ終了時間帯に他の利用者が出入りする<br>→ 玄関が開く時間帯として<strong>離設リスクが最も高い</strong></li>
+        <li>スタッフは玄関付近の動向を必ず把握する</li>
+        <li>可能な場合はこの時間帯に役割活動を提供し、Aさんの注意を活動に向ける</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="method-block">
+    <div class="method-block-title">「出ていけ」発言・荷造り場面への対応</div>
+    <div class="method-block-body">
+      <ul>
+        <li class="ok">訴えは否定せず傾聴する</li>
+        <li class="ok">「ここにいていいんですよ」と穏やかに安心感を伝える</li>
+        <li class="ok">荷造りを無理に止めずそばに寄り添い、落ち着いたら役割活動に誘導する</li>
+        <li class="ng">「そんな人はいません」の否定は逆効果<span class="note-mark">※1</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="method-block">
+    <div class="method-block-title">その他の注意点</div>
+    <div class="method-block-body">
+      <ul>
+        <li>往診・面会のある日はあらかじめ情報共有し、様子を気にかける</li>
+        <li>不穏前後の状況をChatに記録しカンファレンスで分析する</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- Chat -->
+<section>
+  <div class="chat-box">
+    <div class="chat-title">💬 Chat記録はいつも通りで大丈夫です</div>
+    <p style="font-size:0.88em; color:#185fa5; margin-bottom:8px;">日常の記録をそのまま続けてください。気づいたことがあれば一言追記していただけると参考になります。</p>
+    <ul>
+      <li>デイ終了時間帯の様子</li>
+      <li>声かけで落ち着いた・落ち着かなかった場面</li>
+      <li>役割活動後の様子（笑顔・拒否どちらも）</li>
+      <li>往診・面会前後の変化</li>
+    </ul>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- 注釈 -->
+<section>
+  <div class="sec-label">注釈</div>
+  <div class="note-section">
+    <h3>※1　「そんな人はいません」等の否定が逆効果になる理由</h3>
+
+    <h3>Kitwoodの「悪性の社会心理（Malignant Social Psychology）」</h3>
+    <p>Kitwoodは認知症の人の自己感覚を傷つける17の関わり方を「悪性の社会心理」として定義しています。その中に：</p>
+    <ul style="margin: 6px 0;">
+      <li><strong>無効化（Invalidation）</strong>：本人の感情・経験・視点を否定すること</li>
+      <li><strong>否認（Disempowerment）</strong>：本人の能力や感情を認めないこと</li>
+    </ul>
+    <p style="margin-top:8px;">「そんなことないですよ」は本人が感じている現実を否定する行為＝無効化にあたり、「自分の感覚はおかしい」「ここでは自分は理解されない」という疎外感をさらに強める。</p>
+
+    <h3 style="margin-top:14px;">認知症の記憶・感情の特性から</h3>
+    <p>認知症が進行しても感情の記憶は比較的保たれる（扁桃体機能）。「否定された」という感情体験は言葉の内容を忘れても残りやすく、不信感・不安感の蓄積につながる。事実確認・説得は短期記憶障害のある方には効果が薄く、むしろ混乱を招く。</p>
+
+    <h3 style="margin-top:14px;">参考文献</h3>
+    <ul class="ref-list">
+      <li>Kitwood, T.（1997）<em>Dementia Reconsidered: The Person Comes First</em></li>
+      <li>水野裕（2008）「実践パーソン・センタード・ケア」</li>
+      <li>認知症介護研究・研修センター「ひもときシート」解説</li>
+    </ul>
+  </div>
+</section>
+
+<p style="font-size:0.78em; color:#aaa; text-align:center; margin-top:20px;">
+  本ページは実習中の学びの共有を目的として作成しています。
+</p>
+
+</main>
+</body>
+</html>
