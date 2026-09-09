@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>外来語の長音表記 ― 日本語検定対策</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600&family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F6F3EA;
+  --paper-2:#EFEBDD;
+  --ink:#26241F;
+  --ink-soft:#5B584F;
+  --gray:#8B887C;
+  --red:#B23C2F;
+  --red-deep:#7A281F;
+  --red-wash:#F3E1DC;
+  --rule:#D9D2BF;
+}
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:"Noto Sans JP","Noto Serif JP",serif;
+  line-height:1.9;
+}
+.page{
+  max-width:760px;
+  margin:0 auto;
+  padding:64px 32px 120px;
+  position:relative;
+}
+.page::before{
+  content:"";
+  position:absolute;
+  top:0; bottom:0; left:56px;
+  width:1px;
+  background:var(--rule);
+}
+.masthead{
+  padding-left:40px;
+  margin-bottom:56px;
+}
+.masthead .kicker{
+  font-size:13px;
+  color:var(--red-deep);
+  letter-spacing:.05em;
+  margin:0 0 10px;
+}
+.masthead h1{
+  font-family:"Noto Serif JP",serif;
+  font-weight:600;
+  font-size:34px;
+  margin:0 0 14px;
+  line-height:1.5;
+}
+.masthead p{
+  color:var(--ink-soft);
+  font-size:15px;
+  margin:0;
+  max-width:520px;
+}
+
+section{
+  padding-left:40px;
+  margin-bottom:60px;
+}
+.sec-num{
+  position:absolute;
+  left:0;
+  width:56px;
+  text-align:center;
+  font-family:"Noto Serif JP",serif;
+  font-size:15px;
+  color:var(--gray);
+  transform:translateY(2px);
+}
+h2{
+  font-family:"Noto Serif JP",serif;
+  font-weight:600;
+  font-size:20px;
+  margin:0 0 20px;
+  padding-bottom:12px;
+  border-bottom:1px solid var(--rule);
+}
+p{ font-size:15.5px; color:var(--ink); margin:0 0 16px; }
+.lede{ color:var(--ink-soft); }
+
+/* word row with correction marks */
+.wordlist{ margin:24px 0; }
+.wordrow{
+  display:grid;
+  grid-template-columns:28px 1fr 1fr;
+  align-items:center;
+  gap:16px;
+  padding:12px 0;
+  border-bottom:1px solid var(--rule);
+  font-size:15px;
+}
+.wordrow:last-child{ border-bottom:none; }
+.mark{ display:flex; align-items:center; justify-content:center; }
+.mark svg{ width:22px; height:22px; }
+.eng{ color:var(--ink-soft); font-size:13px; }
+.jp{ font-family:"Noto Serif JP",serif; font-size:17px; }
+.jp .stretch{ color:var(--red); font-weight:600; }
+
+/* callout / point */
+.point{
+  position:relative;
+  background:var(--red-wash);
+  border-radius:2px;
+  padding:20px 24px 20px 56px;
+  margin:24px 0;
+  font-size:14.5px;
+  color:var(--red-deep);
+}
+.point .stamp{
+  position:absolute;
+  left:16px; top:18px;
+  width:26px; height:26px;
+  border:2px solid var(--red);
+  border-radius:3px;
+  color:var(--red);
+  display:flex; align-items:center; justify-content:center;
+  font-family:"Noto Serif JP",serif;
+  font-size:13px;
+  font-weight:600;
+  transform:rotate(-6deg);
+}
+
+table.rule-table{
+  width:100%;
+  border-collapse:collapse;
+  font-size:14.5px;
+  margin:20px 0;
+}
+table.rule-table th{
+  text-align:left;
+  font-weight:500;
+  color:var(--ink-soft);
+  font-size:13px;
+  padding:8px 12px 8px 0;
+  border-bottom:1px solid var(--ink);
+}
+table.rule-table td{
+  padding:10px 12px 10px 0;
+  border-bottom:1px solid var(--rule);
+  vertical-align:top;
+}
+
+.flow{
+  border-left:2px solid var(--rule);
+  padding-left:20px;
+  margin:20px 0;
+}
+.flow-step{ margin-bottom:16px; font-size:15px; }
+.flow-step .label{
+  display:block;
+  font-size:12.5px;
+  color:var(--gray);
+  margin-bottom:2px;
+}
+
+/* quiz */
+.quiz{
+  border:1px solid var(--ink);
+  padding:24px;
+  margin-top:12px;
+}
+.quiz ol{ margin:0 0 16px; padding-left:22px; font-size:15px; }
+.quiz li{ margin-bottom:8px; }
+.quiz button{
+  font-family:"Noto Sans JP",sans-serif;
+  font-size:13.5px;
+  padding:8px 18px;
+  background:transparent;
+  border:1px solid var(--ink);
+  color:var(--ink);
+  cursor:pointer;
+  border-radius:2px;
+}
+.quiz button:hover{ background:var(--ink); color:var(--paper); }
+.answer{
+  margin-top:16px;
+  padding-top:16px;
+  border-top:1px dashed var(--rule);
+  font-size:14.5px;
+  color:var(--red-deep);
+  display:none;
+}
+.answer.show{ display:block; }
+
+footer{
+  padding-left:40px;
+  font-size:12.5px;
+  color:var(--gray);
+  margin-top:80px;
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="masthead">
+    <p class="kicker i18n" data-ja="日本語検定対策 ― 表記の巻" data-ne="निहोङ्गो केन्तेई तयारी ― लेखन खण्ड">日本語検定対策 ― 表記の巻</p>
+    <h1 class="i18n" data-ja="長音「ー」の使い方<br>カタカナ表記とひらがな表記" data-ne="दीर्घ स्वर चिन्ह「ー」को प्रयोग<br>कटकाना र हिरागाना लेखनमा">長音「ー」の使い方<br>カタカナ表記とひらがな表記</h1>
+    <p class="i18n" data-ja="「ケアマネジャー」はなぜ伸ばさないのか。外来語のカタカナ表記、そしてひらがなの長音ルールまで、まとめて読み解く一枚。" data-ne="किन「ケアマネジャー」लाई तानिँदैन? विदेशी शब्दको कटकाना लेखनदेखि हिरागानाको दीर्घ स्वर नियमसम्म, एकैचोटि बुझ्ने एक पृष्ठ।">「ケアマネジャー」はなぜ伸ばさないのか。外来語のカタカナ表記、そしてひらがなの長音ルールまで、まとめて読み解く一枚。</p>
+    <button id="langBtn" style="margin-top:20px; font-family:'Noto Sans JP',sans-serif; font-size:13px; padding:8px 18px; background:transparent; border:1px solid var(--red); color:var(--red-deep); cursor:pointer; border-radius:2px;">नेपालीमा हेर्नुहोस्</button>
+  </div>
+
+  <section>
+    <span class="sec-num">01</span>
+    <h2 class="i18n" data-ja="ひらがなの長音 ― 母音を重ねて書く" data-ne="हिरागानाको दीर्घ स्वर ― उही स्वर दोहोर्याएर लेख्ने">ひらがなの長音 ― 母音を重ねて書く</h2>
+    <p class="lede i18n" data-ja="現代仮名遣いでは、ひらがなの長音は「同じ母音を重ねて書く」のが基本です。ア列・イ列・ウ列はこの原則どおりです。" data-ne="आधुनिक कानाजुकाइमा हिरागानाको दीर्घ स्वर मूलतः 「उही स्वर दोहोर्याएर」 लेखिन्छ। अ, इ, उ पङ्क्ति यही नियमअनुसार हुन्छन्।">現代仮名遣いでは、ひらがなの長音は「同じ母音を重ねて書く」のが基本です。ア列・イ列・ウ列はこの原則どおりです。</p>
+    <div class="wordlist">
+      <div class="wordrow">
+        <div class="mark">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#B23C2F" stroke-width="2"><circle cx="12" cy="12" r="9"/></svg>
+        </div>
+        <div class="eng">ア列+あ</div>
+        <div class="jp">おか<span class="stretch">あ</span>さん</div>
+      </div>
+      <div class="wordrow">
+        <div class="mark">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#B23C2F" stroke-width="2"><circle cx="12" cy="12" r="9"/></svg>
+        </div>
+        <div class="eng">イ列+い</div>
+        <div class="jp">おじ<span class="stretch">い</span>さん</div>
+      </div>
+      <div class="wordrow">
+        <div class="mark">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#B23C2F" stroke-width="2"><circle cx="12" cy="12" r="9"/></svg>
+        </div>
+        <div class="eng">ウ列+う</div>
+        <div class="jp">く<span class="stretch">う</span>き(空気)</div>
+      </div>
+    </div>
+    <p class="lede i18n" style="font-size:13px;" data-ja="カタカナ語なら「ー」一本で済むところを、ひらがなは母音の文字そのものを足して表す ― ここが最初の分かれ目です。" data-ne="कटकाना शब्दमा जहाँ एउटै「ー」ले पुग्छ, हिरागानामा भने स्वरको अक्षर नै थपेर देखाइन्छ ― यही पहिलो भिन्नता हो।">カタカナ語なら「ー」一本で済むところを、ひらがなは母音の文字そのものを足して表す ― ここが最初の分かれ目です。</p>
+  </section>
+
+  <section>
+    <span class="sec-num">02</span>
+    <h2 class="i18n" data-ja="エ列・オ列は例外がある" data-ne="ए र ओ पङ्क्तिमा अपवाद छन्">エ列・オ列は例外がある</h2>
+    <p class="lede i18n" data-ja="エ列とオ列の長音だけは、表記と発音がずれることがあります。原則は「え」「お」を重ねますが、歴史的な経緯で「い」「う」と書く語が多く存在します。" data-ne="केवल ए र ओ पङ्क्तिको दीर्घ स्वरमा लेखन र उच्चारण फरक हुन सक्छ। नियमअनुसार「え」वा「お」दोहोर्याइन्छ, तर ऐतिहासिक कारणले「い」वा「う」लेखिने शब्द धेरै छन्।">エ列とオ列の長音だけは、表記と発音がずれることがあります。原則は「え」「お」を重ねますが、歴史的な経緯で「い」「う」と書く語が多く存在します。</p>
+    <table class="rule-table">
+      <tr><th>列</th><th>原則表記</th><th>実際によく使う表記</th></tr>
+      <tr><td>エ列長音</td><td>おねえさん(え+え)</td><td>えいご(英語)= え+い</td></tr>
+      <tr><td>オ列長音</td><td>おおきい(お+お)</td><td>こうこう(高校)= こ+う</td></tr>
+    </table>
+    <div class="point">
+      <span class="stamp">要点</span>
+      <span class="i18n" data-ja="「え+い」「お+う」で書く語のほうが圧倒的に多数派です。「え+え」「お+お」で書くのは「おねえさん・ねえさん」「おおきい・とおい・こおり」など、限られた一群の語だけと覚えるのが実践的です。" data-ne="「え+い」と「お+う」で書く語のほうが圧倒的に多数派です。「え+え」「お+お」は「おねえさん・ねえさん」「おおきい・とおい・こおり」जस्ता सीमित शब्दहरूमात्र हुन् भनी सम्झनु व्यावहारिक हुन्छ。">「え+い」「お+う」で書く語のほうが圧倒的に多数派です。「え+え」「お+お」で書くのは「おねえさん・ねえさん」「おおきい・とおい・こおり」など、限られた一群の語だけと覚えるのが実践的です。</span>
+    </div>
+  </section>
+
+  <section>
+    <span class="sec-num">03</span>
+    <h2 class="i18n" data-ja="原則 ― 内閣告示「外来語の表記」" data-ne="सिद्धान्त ― मन्त्रिपरिषद घोषणा 「विदेशी शब्दको लेखन」">原則 ― 内閣告示「外来語の表記」</h2>
+    <p class="lede i18n" data-ja="英語の語末が <strong>-er / -or / -ar</strong> にあたる音は、日本語ではア列の長音として「ー」を付けるのが原則です。" data-ne="अंग्रेजी शब्दको अन्त्यमा <strong>-er / -or / -ar</strong> जस्तो ध्वनि हुँदा, जापानीमा यसलाई अ-पङ्क्तिको दीर्घ स्वरको रूपमा「ー」थपेर लेख्ने नियम हो।">英語の語末が <strong>-er / -or / -ar</strong> にあたる音は、日本語ではア列の長音として「ー」を付けるのが原則です。</p>
+    <div class="wordlist">
+      <div class="wordrow">
+        <div class="mark">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#B23C2F" stroke-width="2"><circle cx="12" cy="12" r="9"/></svg>
+        </div>
+        <div class="eng">computer</div>
+        <div class="jp">コンピュ<span class="stretch">ー</span>ター</div>
+      </div>
+      <div class="wordrow">
+        <div class="mark">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#B23C2F" stroke-width="2"><circle cx="12" cy="12" r="9"/></svg>
+        </div>
+        <div class="eng">elevator</div>
+        <div class="jp">エレベ<span class="stretch">ー</span>ター</div>
+      </div>
+      <div class="wordrow">
+        <div class="mark">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#B23C2F" stroke-width="2"><circle cx="12" cy="12" r="9"/></svg>
+        </div>
+        <div class="eng">manager</div>
+        <div class="jp">マネ<span class="stretch">ー</span>ジャー</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <span class="sec-num">04</span>
+    <h2 class="i18n" data-ja="慣用 ― 伸ばさない語もある" data-ne="प्रचलन ― नतन्किने शब्दहरू पनि छन्">慣用 ― 伸ばさない語もある</h2>
+    <p class="lede i18n" data-ja="一方で、業界内の慣用表記として長音を省く語もあります。「ケアマネジャー」がその代表例です。" data-ne="अर्कोतर्फ, क्षेत्रगत प्रचलित लेखनको रूपमा दीर्घ स्वर हटाइने शब्दहरू पनि छन्। 「ケアマネジャー」यसको प्रतिनिधि उदाहरण हो。">一方で、業界内の慣用表記として長音を省く語もあります。「ケアマネジャー」がその代表例です。</p>
+    <div class="wordlist">
+      <div class="wordrow">
+        <div class="mark">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#B23C2F" stroke-width="2"><circle cx="12" cy="12" r="9"/></svg>
+        </div>
+        <div class="eng">care manager ― 慣用表記</div>
+        <div class="jp">ケアマネジャー</div>
+      </div>
+      <div class="wordrow">
+        <div class="mark">
+          <svg viewBox="0 0 24 24" stroke="#8B887C" stroke-width="2"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+        </div>
+        <div class="eng">一般表記に引きずられた形</div>
+        <div class="jp">ケアマネ<span class="stretch">ー</span>ジャー</div>
+      </div>
+    </div>
+    <div class="point">
+      <span class="stamp">要点</span>
+      <span class="i18n" data-ja="「介護支援専門員」の通称として、厚生労働省や業界団体が「ケアマネジャー」表記で統一してきた経緯があり、これが慣用として定着しています。" data-ne="「介護支援専門員」(हेरचाह सहयोग विशेषज्ञ) को उपनामको रूपमा, स्वास्थ्य श्रम मन्त्रालय र क्षेत्रगत संस्थाहरूले「ケアマネジャー」लेखनलाई एकीकृत गर्दै आएका छन्, र यो प्रचलनको रूपमा स्थापित भएको छ。">「介護支援専門員」の通称として、厚生労働省や業界団体が「ケアマネジャー」表記で統一してきた経緯があり、これが慣用として定着しています。</span>
+    </div>
+    <table class="rule-table">
+      <tr><th colspan="2" class="i18n" data-ja="一次資料 ― 内閣告示「外来語の表記」(平成3年6月28日 内閣告示第2号)注3" data-ne="प्राथमिक स्रोत ― मन्त्रिपरिषद घोषणा 「विदेशी शब्दको लेखन」 (हेइसे ३ वर्ष जुन २८, घोषणा नं. २) टिप्पणी ३">一次資料 ― 内閣告示「外来語の表記」(平成3年6月28日 内閣告示第2号)注3</th></tr>
+      <tr><td colspan="2" style="font-size:13.5px; color:var(--ink-soft); line-height:1.8;">
+        <span class="i18n" data-ja="英語の語末の‐er、‐or、‐arなどに当たるものは、原則としてア列の長音とし長音符号「ー」を用いて書き表す。ただし、慣用に応じて「ー」を省くことができる。<br>
+        〔例〕エレベーター ギター コンピューター マフラー ／ エレベータ コンピュータ スリッパ" data-ne="अंग्रेजी शब्दको अन्त्यमा ‐er, ‐or, ‐ar जस्ता ध्वनिलाई सामान्यतया अ-पङ्क्तिको दीर्घ स्वर मानी दीर्घ स्वर चिन्ह「ー」प्रयोग गरी लेखिन्छ। तर, प्रचलनअनुसार「ー」हटाउन सकिन्छ।<br>
+        (उदाहरण) エレベーター ギター コンピューター マフラー ／ エレベータ コンピュータ スリッパ">英語の語末の‐er、‐or、‐arなどに当たるものは、原則としてア列の長音とし長音符号「ー」を用いて書き表す。ただし、慣用に応じて「ー」を省くことができる。<br>
+        〔例〕エレベーター ギター コンピューター マフラー ／ エレベータ コンピュータ スリッパ</span>
+      </td></tr>
+    </table>
+    <p class="lede i18n" style="font-size:13px;" data-ja="つまり告示そのものが「原則は伸ばす、慣用があれば省いてよい」と両方を認めています。「ケアマネジャー」もこの但し書きの範囲内にあたります。" data-ne="अर्थात् घोषणाले नै 「नियमले तान्ने, प्रचलन भए नतान्न सकिने」 दुवैलाई मान्यता दिएको छ। 「ケアマネジャー」पनि यही अपवाद व्यवस्थाभित्र पर्छ。">つまり告示そのものが「原則は伸ばす、慣用があれば省いてよい」と両方を認めています。「ケアマネジャー」もこの但し書きの範囲内にあたります。</p>
+  </section>
+
+  <section>
+    <span class="sec-num">05</span>
+    <h2 class="i18n" data-ja="もう一つの背景 ― 工業・学術分野の省略ルール" data-ne="अर्को पृष्ठभूमि ― औद्योगिक तथा शैक्षिक क्षेत्रको संक्षिप्तीकरण नियम">もう一つの背景 ― 工業・学術分野の省略ルール</h2>
+    <p class="lede i18n" data-ja="旧JIS規格では、語末が3音節以上でア列長音になる場合、「ー」を省略してよいとする表記慣行がありました。" data-ne="पुरानो JIS मापदण्डमा, शब्दको अन्त्य ३ वा बढी अक्षर भई अ-पङ्क्तिको दीर्घ स्वर हुने अवस्थामा「ー」हटाउन सकिने लेखन प्रचलन थियो。">旧JIS規格では、語末が3音節以上でア列長音になる場合、「ー」を省略してよいとする表記慣行がありました。</p>
+    <table class="rule-table">
+      <tr><th>語</th><th>工業・学術表記</th><th>一般表記</th></tr>
+      <tr><td>computer</td><td>コンピュータ</td><td>コンピューター</td></tr>
+      <tr><td>motor</td><td>モータ</td><td>モーター</td></tr>
+      <tr><td>printer</td><td>プリンタ</td><td>プリンター</td></tr>
+    </table>
+    <p class="lede i18n" style="font-size:13.5px;" data-ja="※ 現行JISは内閣告示に準拠する方向で改定されており、扱いは分野によって分かれます。" data-ne="※ हालको JIS मन्त्रिपरिषद घोषणाअनुरूप संशोधन हुँदैछ, र व्यवहार क्षेत्रअनुसार फरक हुन्छ。">※ 現行JISは内閣告示に準拠する方向で改定されており、扱いは分野によって分かれます。</p>
+  </section>
+
+  <section>
+    <span class="sec-num">06</span>
+    <h2 class="i18n" data-ja="判断の順番" data-ne="निर्णयको क्रम">判断の順番</h2>
+    <div class="flow">
+      <div class="flow-step"><span class="label">まず</span><span class="i18n" data-ja="原則どおり、ア列長音は「ー」で伸ばす" data-ne="नियमअनुसार, अ-पङ्क्तिको दीर्घ स्वरलाई「ー」ले तान्ने">原則どおり、ア列長音は「ー」で伸ばす</span></div>
+      <div class="flow-step"><span class="label">次に</span><span class="i18n" data-ja="特定業界で定着した固有の呼称かを確認する" data-ne="विशेष क्षेत्रमा स्थापित आफ्नै नाम हो कि होइन जाँच्ने">特定業界で定着した固有の呼称かを確認する</span></div>
+      <div class="flow-step"><span class="label">最後に</span><span class="i18n" data-ja="定着していれば、その業界の慣用に従う(ケアマネジャー等)" data-ne="स्थापित भइसकेको भए, त्यो क्षेत्रको प्रचलन पालना गर्ने (ケアマネジャー आदि)">定着していれば、その業界の慣用に従う(ケアマネジャー等)</span></div>
+    </div>
+  </section>
+
+  <section>
+    <span class="sec-num">07</span>
+    <h2 class="i18n" data-ja="確認問題" data-ne="अभ्यास प्रश्न">確認問題</h2>
+    <div class="quiz">
+      <ol>
+        <li>ケアマネジャー</li>
+        <li>エレベーター</li>
+        <li>コンピュータ(工業分野)</li>
+        <li>ドライバー</li>
+      </ol>
+      <p class="i18n" style="font-size:14px; color:var(--ink-soft); margin-bottom:16px;" data-ja="慣用として長音を省く表記が定着しているものはどれか。" data-ne="प्रचलनको रूपमा दीर्घ स्वर हटाइएको लेखन स्थापित भएको कुन हो?">慣用として長音を省く表記が定着しているものはどれか。</p>
+      <button class="i18n" onclick="document.getElementById('ans').classList.add('show'); this.style.display='none';" data-ja="答えを見る" data-ne="उत्तर हेर्नुहोस्">答えを見る</button>
+      <div class="answer i18n" id="ans" data-ja="正解は 1 と 3。「ケアマネジャー」は業界慣用、「コンピュータ」は工業分野の省略ルールによるもの。2と4は原則どおり長音を付ける。" data-ne="सही उत्तर १ र ३ हो। 「ケアマネジャー」क्षेत्रगत प्रचलन हो, 「コンピュータ」औद्योगिक क्षेत्रको संक्षिप्तीकरण नियमअनुसार हो। २ र ४ मा नियमअनुसार दीर्घ स्वर थपिन्छ。">正解は 1 と 3。「ケアマネジャー」は業界慣用、「コンピュータ」は工業分野の省略ルールによるもの。2と4は原則どおり長音を付ける。</div>
+    </div>
+
+    <div class="quiz" style="margin-top:20px;">
+      <ol>
+        <li>おねえさん</li>
+        <li>えいご(英語)</li>
+        <li>とおい</li>
+        <li>こうこう(高校)</li>
+      </ol>
+      <p class="i18n" style="font-size:14px; color:var(--ink-soft); margin-bottom:16px;" data-ja="エ列・オ列の長音を、原則どおり同じ母音を重ねて書いているものはどれか。" data-ne="ए र ओ पङ्क्तिको दीर्घ स्वरलाई नियमअनुसार उही स्वर दोहोर्याएर लेखेको कुन हो?">エ列・オ列の長音を、原則どおり同じ母音を重ねて書いているものはどれか。</p>
+      <button class="i18n" onclick="document.getElementById('ans2').classList.add('show'); this.style.display='none';" data-ja="答えを見る" data-ne="उत्तर हेर्नुहोस्">答えを見る</button>
+      <div class="answer i18n" id="ans2" data-ja="正解は 1 と 3。「おねえさん」は え+え、「とおい」は お+お で原則どおり。「えいご」は え+い、「こうこう」は こ+う で、例外(多数派)の表記。" data-ne="सही उत्तर १ र ३ हो। 「おねえさん」え+え, 「とおい」お+お नियमअनुसार हुन्। 「えいご」え+い, 「こうこう」こ+う अपवाद (बहुसंख्यक) लेखन हो。">正解は 1 と 3。「おねえさん」は え+え、「とおい」は お+お で原則どおり。「えいご」は え+い、「こうこう」は こ+う で、例外(多数派)の表記。</div>
+    </div>
+
+    <div class="quiz" style="margin-top:20px;">
+      <p class="i18n" style="font-size:14px; color:var(--ink-soft); margin-bottom:16px;" data-ja="一、二の文には、長音の書き表し方が正しくない言葉が一つずつあります。その言葉の正しい書き表し方を答えてください。" data-ne="वाक्य १ र २ मा दीर्घ स्वरको लेखन गलत भएको एक-एक शब्द छ। ती शब्दहरूको सही लेखन बताउनुहोस्।">一、二の文には、長音の書き表し方が正しくない言葉が一つずつあります。その言葉の正しい書き表し方を答えてください。</p>
+      <ol>
+        <li>娘の通う小学校は、家からとても<strong>とうい</strong>。</li>
+        <li>新しいオフィスには<strong>エレベータ</strong>がなく、階段を使うことになった。</li>
+      </ol>
+      <button class="i18n" onclick="document.getElementById('ans3').classList.add('show'); this.style.display='none';" data-ja="答えを見る" data-ne="उत्तर हेर्नुहोस्">答えを見る</button>
+      <div class="answer i18n" id="ans3" data-ja="一…とおい(お列長音は原則「お+お」で書く。「遠い」はこの原則どおりの少数派の語で、「とうい」ではなく「とおい」が正しい)<br>二…エレベーター(外来語の語末‐orは原則ア列長音「ー」を用いて書き表す。「エレベータ」は工業・学術分野の慣用表記であり、一般の文章では「エレベーター」が正しい)" data-ne="१…とおい (ओ पङ्क्तिको दीर्घ स्वर नियमअनुसार「お+お」मा लेखिन्छ। 「遠い」यही नियमअनुसारको अल्पसंख्यक शब्द हो, 「とうい」होइन「とおい」सही हो)<br>२…エレベーター (विदेशी शब्दको अन्त्य‐or नियमअनुसार अ-पङ्क्तिको दीर्घ स्वर「ー」प्रयोग गरी लेखिन्छ। 「エレベータ」औद्योगिक तथा शैक्षिक क्षेत्रको प्रचलित लेखन हो, सामान्य लेखनमा「エレベーター」सही हो)">一…とおい(お列長音は原則「お+お」で書く。「遠い」はこの原則どおりの少数派の語で、「とうい」ではなく「とおい」が正しい)<br>二…エレベーター(外来語の語末‐orは原則ア列長音「ー」を用いて書き表す。「エレベータ」は工業・学術分野の慣用表記であり、一般の文章では「エレベーター」が正しい)</div>
+    </div>
+  </section>
+
+  <footer class="i18n" data-ja="日本語検定対策 ― 長音「ー」の表記" data-ne="निहोङ्गो केन्तेई तयारी ― दीर्घ स्वर「ー」को लेखन">日本語検定対策 ― 長音「ー」の表記</footer>
+</div>
+<script>
+(function(){
+  var btn = document.getElementById('langBtn');
+  var state = 'ja';
+  btn.addEventListener('click', function(){
+    state = state === 'ja' ? 'ne' : 'ja';
+    document.querySelectorAll('.i18n').forEach(function(el){
+      var content = state === 'ja' ? el.getAttribute('data-ja') : el.getAttribute('data-ne');
+      if(content !== null){ el.innerHTML = content; }
+    });
+    btn.textContent = state === 'ja' ? 'नेपालीमा हेर्नुहोस्' : '日本語で見る';
+  });
+})();
+</script>
+</body>
+</html>
