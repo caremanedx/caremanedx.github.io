@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>特定技能生向け 介護オノマトペ マスタークイズ</title>
+<style>
+  :root {
+    --primary: #2563eb;
+    --primary-bg: #eff6ff;
+    --success: #16a34a;
+    --danger: #dc2626;
+    --text: #1f2937;
+    --bg: #f8fafc;
+  }
+  body {
+    font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
+    background-color: var(--bg);
+    color: var(--text);
+    margin: 0;
+    padding: 12px 8px;
+    display: flex;
+    justify-content: center;
+  }
+  .card {
+    background: white;
+    max-width: 520px;
+    width: 100%;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  .header {
+    text-align: center;
+    border-bottom: 2px solid #f1f5f9;
+    padding-bottom: 10px;
+    margin-bottom: 16px;
+  }
+  .header h1 { font-size: 1.2rem; margin: 0; color: var(--primary); }
+  .header p { font-size: 0.8rem; color: #64748b; margin: 4px 0 0 0; }
+  .progress {
+    display: flex; justify-content: space-between; font-size: 0.85rem; color: #64748b; margin-bottom: 10px; font-weight: bold;
+  }
+  .category-badge {
+    display: inline-block; background: var(--primary-bg); color: var(--primary); padding: 4px 10px; border-radius: 12px; font-size: 0.8rem; font-weight: bold; margin-bottom: 10px;
+  }
+  .question-box {
+    background: #f1f5f9; border-radius: 12px; padding: 14px; margin-bottom: 16px; position: relative;
+  }
+  .question-text { font-size: 1.05rem; font-weight: bold; line-height: 1.5; margin-bottom: 8px; }
+  .audio-btn {
+    background: #e2e8f0; border: none; border-radius: 20px; padding: 6px 12px; font-size: 0.85rem; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; font-weight: bold; color: #334155;
+  }
+  .btn-group { display: flex; gap: 12px; margin-bottom: 16px; }
+  .btn-choice {
+    flex: 1; padding: 12px; font-size: 1.8rem; border: 2px solid #cbd5e1; border-radius: 12px; background: white; cursor: pointer; transition: all 0.2s;
+  }
+  .btn-choice:active { transform: scale(0.98); }
+  .btn-o { color: var(--success); border-color: #86efac; }
+  .btn-o:hover { background: #f0fdf4; }
+  .btn-x { color: var(--danger); border-color: #fca5a5; }
+  .btn-x:hover { background: #fef2f2; }
+  .explanation {
+    display: none; background: #f8fafc; border-radius: 12px; padding: 14px; margin-top: 12px; border-left: 4px solid var(--primary); font-size: 0.9rem; line-height: 1.5;
+  }
+  .result-header { font-size: 1.1rem; font-weight: bold; margin-bottom: 6px; }
+  .is-correct { color: var(--success); }
+  .is-wrong { color: var(--danger); }
+  .btn-next {
+    display: none; width: 100%; padding: 12px; background: var(--primary); color: white; border: none; border-radius: 10px; font-size: 1rem; font-weight: bold; cursor: pointer; margin-top: 12px;
+  }
+  .score-screen { text-align: center; padding: 10px 0; }
+  .score-circle {
+    width: 100px; height: 100px; border-radius: 50%; background: var(--primary-bg); color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; font-weight: bold; margin: 16px auto;
+  }
+</style>
+</head>
+<body>
+
+<div class="card">
+  <div class="header">
+    <h1>🗣️ 介護オノマトペ 特化マスタークイズ</h1>
+    <p>現場で使う体調・痛みの言葉をマスターしよう！（全20問）</p>
+  </div>
+
+  <div id="quiz-screen">
+    <div class="progress">
+      <span id="q-num">第 1 問 / 全 20 問</span>
+      <span id="score-counter">正解: 0</span>
+    </div>
+
+    <div class="category-badge" id="q-cat">カテゴリー</div>
+    <div class="question-box">
+      <div class="question-text" id="q-text">問題文が入ります。</div>
+      <button class="audio-btn" id="audio-btn" onclick="playAudio()">🔊 オノマトペを聴く</button>
+    </div>
+
+    <div class="btn-group">
+      <button class="btn-choice btn-o" onclick="checkAnswer(true)">⭕️</button>
+      <button class="btn-choice btn-x" onclick="checkAnswer(false)">❌</button>
+    </div>
+
+    <div class="explanation" id="explanation">
+      <div class="result-header" id="res-header">正解！</div>
+      <div id="res-text">解説文が入ります。</div>
+    </div>
+
+    <button class="btn-next" id="btn-next" onclick="nextQuestion()">次の問題へ ➔</button>
+  </div>
+
+  <div id="score-screen" class="score-screen" style="display:none;">
+    <h2>🎉 全問終了！</h2>
+    <p>あなたのスコア</p>
+    <div class="score-circle" id="final-score">0/20</div>
+    <p id="final-msg">お疲れ様でした！</p>
+    <button class="btn-next" style="display:block; margin-top:16px;" onclick="restartQuiz()">もう一度最初から挑戦 🔄</button>
+  </div>
+</div>
+
+<script>
+const quizData = [
+  // 1. 痛みのオノマトペ
+  { cat: "🩸 痛みの表現", word: "ガンガン", q: "利用者様が「頭がガンガンする」と言ったら、頭が強く脈打つように痛む状態である。", a: true, exp: "【正解：⭕️】「ガンガン」は大きな音が響くように頭が激しく痛む様子を表します。" },
+  { cat: "🩸 痛みの表現", word: "ズキズキ", q: "「足がズキズキ痛む」は、針で刺されたような一瞬の鋭い痛みを意味する。", a: false, exp: "【正解：❌】「ズキズキ」は脈拍に合わせて波のように続く痛みです。針で刺すような痛みに使うのは「チクチク」です。" },
+  { cat: "🩸 痛みの表現", word: "チクチク", q: "「お腹がチクチクする」は、針で軽く刺されたような小さな痛みを感じている状態である。", a: true, exp: "【正解：⭕️】「チクチク」は尖ったもので刺されたような断続的な痛みを表します。" },
+  { cat: "🩸 痛みの表現", word: "シクシク", q: "「お腹がシクシク痛む」は、立っていられないほどの激しい激痛を表す。", a: false, exp: "【正解：❌】「シクシク」は主にみぞおちやお腹が地味に継続して痛む様子を表します（主に女性やお腹に使われます）。" },
+  { cat: "🩸 痛みの表現", word: "キリキリ", q: "「胃がキリキリ痛む」は、胃が絞られるように強く痛む状態を表す。", a: true, exp: "【正解：⭕️】「キリキリ」は穴をあけられるような鋭く強い痛みを指します。" },
+
+  // 2. 体調・気分のオノマトペ
+  { cat: "🤒 体調の表現", word: "ゾワゾワ", q: "「背中がゾワゾワする」と言われたら、寒気（熱が出はじめる前兆）の可能性がある。", a: true, exp: "【正解：⭕️】「ゾワゾワ」は寒気やゾクゾクする感覚を表し、発熱の前兆によく見られます。" },
+  { cat: "🤒 体調の表現", word: "ムカムカ", q: "「胸がムカムカする」は、胸のあたりが痒くてたまらない状態のことである。", a: false, exp: "【正解：❌】「ムカムカ」は吐き気（気持ち悪い状態）や腹立たしさを表します。痒みではありません。" },
+  { cat: "🤒 体調の表現", word: "グラグラ", q: "「頭がグラグラする」は、めまいがして立ちくらみや揺れを感じている状態である。", a: true, exp: "【正解：⭕️】「グラグラ」「フラフラ」は、めまいや平衡感覚が保てない状態を表します。" },
+  { cat: "🤒 体調の表現", word: "フラフラ", q: "「フラフラする」と言っている利用者は転倒リスクが低いため一人で歩かせてよい。", a: false, exp: "【正解：❌】「フラフラ」は力が入らず千鳥足になる状態で、転倒の危険が非常に高いです！付き添いが必要です。" },
+
+  // 3. 食事・お腹のオノマトペ
+  { cat: "🍚 食事・お腹", word: "ペコペコ", q: "「お腹がペコペコだ」は、お腹が空いて食事を食べたい状態を表す。", a: true, exp: "【正解：⭕️】「ペコペコ」は空腹を表します。「お腹が痛い」の意味ではないので注意しましょう。" },
+  { cat: "🍚 食事・お腹", word: "ガツガツ", q: "「ガツガツ食べる」は、ゆっくり時間をかけて上品に食事をすることである。", a: false, exp: "【正解：❌】「ガツガツ」は勢いよく勢い任せに食べる様子です。誤嚥（ゴホゴホ）に注意が必要です。" },
+  { cat: "🍚 食事・お腹", word: "ゴクゴク", q: "「水分をゴクゴク飲む」は、一口ずつゆっくり飲み込んでいる様子を表す。", a: false, exp: "【正解：❌】「ゴクゴク」は勢いよく続けて水分を流し込むことです。高齢者のゴクゴク飲みは誤嚥リスクに注意します。" },
+  { cat: "🍚 食事・お腹", word: "ゴロゴロ", q: "「お腹がゴロゴロ言っている」は、腸が動いて便意や下痢の可能性がある状態である。", a: true, exp: "【正解：⭕️】「ゴロゴロ」はお腹（腸）の動く音や、消化不良・便意を表します。" },
+
+  // 4. 動作・様子のオノマトペ
+  { cat: "🚶 動作・様子", word: "よろよろ", q: "「よろよろ歩く」は、足元が定まらず今にも倒れそうな歩き方のことである。", a: true, exp: "【正解：⭕️】「よろよろ」は筋力低下などで身体のバランスが取れない歩き方です。" },
+  { cat: "🚶 動作・様子", word: "うとうと", q: "「うとうとしている」は、完全に目が冴えて元気に起きている状態である。", a: false, exp: "【正解：❌】「うとうと」は半分眠りかけている（居眠りしそうな）状態です。" },
+  { cat: "🚶 動作・様子", word: "そわそわ", q: "「そわそわしている」は、落ち着きがなく心が何かにとらわれている状態を表す。", a: true, exp: "【正解：⭕️】「そわそわ」はトイレに行きたい時や不安な時、落ち着きがない様子を表します。" },
+  { cat: "🚶 動作・様子", word: "うろうろ", q: "「うろうろ歩く」は、目的もなく歩き回る（徘徊などの）状態を表すことがある。", a: true, exp: "【正解：⭕️】「うろうろ」はあてもなく歩き回る動作です。" },
+
+  // 5. 皮膚・感覚のオノマトペ
+  { cat: "🧴 皮膚・感覚", word: "かさかさ", q: "「皮膚がかさかさしている」は、水分が多く湿っている状態のことである。", a: false, exp: "【正解：❌】「かさかさ」は乾燥して潤いがない状態です。保湿剤の塗布などのケアが必要です。" },
+  { cat: "🧴 皮膚・感覚", word: "じくじく", q: "「傷口がじくじくしている」は、浸出液や汁が出て湿っている状態である。", a: true, exp: "【正解：⭕️】「じくじく」は傷口や湿疹から液体（汁）が出ている状態を表します。" },
+  { cat: "🧴 皮膚・感覚", word: "パンパン", q: "「足がパンパンにはれている」は、むくみ（浮腫）や腫れで張っている状態である。", a: true, exp: "【正解：⭕️】「パンパン」は皮膚が強く張っているむくみや腫れを表します。" }
+];
+
+let currentIndex = 0;
+let score = 0;
+let answered = false;
+
+function loadQuestion() {
+  answered = false;
+  const q = quizData[currentIndex];
+  document.getElementById("q-num").innerText = `第 ${currentIndex + 1} 問 / 全 ${quizData.length} 問`;
+  document.getElementById("q-cat").innerText = q.cat;
+  document.getElementById("q-text").innerText = q.q;
+  document.getElementById("audio-btn").innerText = `🔊 「${q.word}」を聴く`;
+  document.getElementById("explanation").style.display = "none";
+  document.getElementById("btn-next").style.display = "none";
+  
+  const btns = document.querySelectorAll('.btn-choice');
+  btns.forEach(b => b.style.pointerEvents = 'auto');
+}
+
+function playAudio() {
+  const word = quizData[currentIndex].word;
+  const uttr = new SpeechSynthesisUtterance(word);
+  uttr.lang = "ja-JP";
+  uttr.rate = 0.8;
+  speechSynthesis.speak(uttr);
+}
+
+function checkAnswer(userAns) {
+  if (answered) return;
+  answered = true;
+
+  const q = quizData[currentIndex];
+  const isCorrect = (userAns === q.a);
+  if (isCorrect) score++;
+
+  document.getElementById("score-counter").innerText = `正解: ${score}`;
+
+  const resHeader = document.getElementById("res-header");
+  if (isCorrect) {
+    resHeader.innerText = "⭕️ 正解です！";
+    resHeader.className = "result-header is-correct";
+  } else {
+    resHeader.innerText = "❌ 不正解…";
+    resHeader.className = "result-header is-wrong";
+  }
+
+  document.getElementById("res-text").innerHTML = q.exp;
+  document.getElementById("explanation").style.display = "block";
+  document.getElementById("btn-next").style.display = "block";
+
+  const btns = document.querySelectorAll('.btn-choice');
+  btns.forEach(b => b.style.pointerEvents = 'none');
+}
+
+function nextQuestion() {
+  currentIndex++;
+  if (currentIndex < quizData.length) {
+    loadQuestion();
+  } else {
+    showScore();
+  }
+}
+
+function showScore() {
+  document.getElementById("quiz-screen").style.display = "none";
+  document.getElementById("score-screen").style.display = "block";
+  document.getElementById("final-score").innerText = `${score} / ${quizData.length}`;
+  
+  let msg = "";
+  if (score === 20) msg = "完璧です！オノマトペマスターですね！🎉";
+  else if (score >= 15) msg = "素晴らしい成績です！現場でもバッチリ使えます！👍";
+  else if (score >= 10) msg = "半分以上できました！もう一度復習してみましょう！😊";
+  else msg = "繰り返し練習して覚せましょう！💪";
+  
+  document.getElementById("final-msg").innerText = msg;
+}
+
+function restartQuiz() {
+  currentIndex = 0;
+  score = 0;
+  document.getElementById("score-counter").innerText = "正解: 0";
+  document.getElementById("score-screen").style.display = "none";
+  document.getElementById("quiz-screen").style.display = "block";
+  loadQuestion();
+}
+
+loadQuestion();
+</script>
+</body>
+</html>
