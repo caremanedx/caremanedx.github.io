@@ -12,9 +12,10 @@
     --danger: #dc2626;
     --text: #1f2937;
     --bg: #f8fafc;
+    --ne: #b45309;
   }
   body {
-    font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
+    font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Meiryo", "Noto Sans Devanagari", "Nirmala UI", "Mangal", sans-serif;
     background-color: var(--bg);
     color: var(--text);
     margin: 0;
@@ -35,22 +36,40 @@
     text-align: center;
     border-bottom: 2px solid #f1f5f9;
     padding-bottom: 10px;
-    margin-bottom: 16px;
+    margin-bottom: 12px;
   }
   .header h1 { font-size: 1.2rem; margin: 0; color: var(--primary); }
   .header p { font-size: 0.8rem; color: #64748b; margin: 4px 0 0 0; }
+
+  /* 言語切り替え */
+  .lang-switch {
+    display: flex; background: #f1f5f9; border-radius: 12px; padding: 4px; gap: 4px; margin-bottom: 14px;
+  }
+  .lang-btn {
+    flex: 1; border: none; background: transparent; padding: 8px 4px; border-radius: 9px;
+    font-size: 0.85rem; font-weight: bold; color: #475569; cursor: pointer; font-family: inherit;
+  }
+  .lang-btn.active { background: white; color: var(--primary); box-shadow: 0 1px 4px rgba(0,0,0,0.1); }
+
+  /* ネパール語の訳文 */
+  .ne { color: var(--ne); font-size: 0.92em; margin-top: 4px; line-height: 1.6; }
+  .ne-only .ne { color: inherit; font-size: 1em; margin-top: 0; }
+
   .progress {
     display: flex; justify-content: space-between; font-size: 0.85rem; color: #64748b; margin-bottom: 10px; font-weight: bold;
   }
   .category-badge {
     display: inline-block; background: var(--primary-bg); color: var(--primary); padding: 4px 10px; border-radius: 12px; font-size: 0.8rem; font-weight: bold; margin-bottom: 10px;
   }
+  .category-badge .ne { display: inline; margin-left: 4px; }
+  .both .category-badge .ne::before { content: "/ "; }
   .question-box {
     background: #f1f5f9; border-radius: 12px; padding: 14px; margin-bottom: 16px; position: relative;
   }
   .question-text { font-size: 1.05rem; font-weight: bold; line-height: 1.5; margin-bottom: 8px; }
+  .question-text .ne { font-weight: normal; }
   .audio-btn {
-    background: #e2e8f0; border: none; border-radius: 20px; padding: 6px 12px; font-size: 0.85rem; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; font-weight: bold; color: #334155;
+    background: #e2e8f0; border: none; border-radius: 20px; padding: 6px 12px; font-size: 0.85rem; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; font-weight: bold; color: #334155; font-family: inherit;
   }
   .btn-group { display: flex; gap: 12px; margin-bottom: 16px; }
   .btn-choice {
@@ -68,8 +87,9 @@
   .is-correct { color: var(--success); }
   .is-wrong { color: var(--danger); }
   .btn-next {
-    display: none; width: 100%; padding: 12px; background: var(--primary); color: white; border: none; border-radius: 10px; font-size: 1rem; font-weight: bold; cursor: pointer; margin-top: 12px;
+    display: none; width: 100%; padding: 12px; background: var(--primary); color: white; border: none; border-radius: 10px; font-size: 1rem; font-weight: bold; cursor: pointer; margin-top: 12px; font-family: inherit;
   }
+  .btn-next .ne { color: #fde68a; }
   .score-screen { text-align: center; padding: 10px 0; }
   .score-circle {
     width: 100px; height: 100px; border-radius: 50%; background: var(--primary-bg); color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; font-weight: bold; margin: 16px auto;
@@ -78,22 +98,28 @@
 </head>
 <body>
 
-<div class="card">
+<div class="card" id="card">
   <div class="header">
-    <h1>🗣️ 介護オノマトペ 特化マスタークイズ</h1>
-    <p>現場で使う体調・痛みの言葉をマスターしよう！（全20問）</p>
+    <h1 id="ui-title"></h1>
+    <p id="ui-sub"></p>
+  </div>
+
+  <div class="lang-switch">
+    <button class="lang-btn" data-mode="ja" onclick="setMode('ja')">🇯🇵 日本語</button>
+    <button class="lang-btn" data-mode="both" onclick="setMode('both')">日本語＋नेपाली</button>
+    <button class="lang-btn" data-mode="ne" onclick="setMode('ne')">🇳🇵 नेपाली</button>
   </div>
 
   <div id="quiz-screen">
     <div class="progress">
-      <span id="q-num">第 1 問 / 全 20 問</span>
-      <span id="score-counter">正解: 0</span>
+      <span id="q-num"></span>
+      <span id="score-counter"></span>
     </div>
 
-    <div class="category-badge" id="q-cat">カテゴリー</div>
+    <div class="category-badge" id="q-cat"></div>
     <div class="question-box">
-      <div class="question-text" id="q-text">問題文が入ります。</div>
-      <button class="audio-btn" id="audio-btn" onclick="playAudio()">🔊 オノマトペを聴く</button>
+      <div class="question-text" id="q-text"></div>
+      <button class="audio-btn" id="audio-btn" onclick="playAudio()"></button>
     </div>
 
     <div class="btn-group">
@@ -102,74 +128,235 @@
     </div>
 
     <div class="explanation" id="explanation">
-      <div class="result-header" id="res-header">正解！</div>
-      <div id="res-text">解説文が入ります。</div>
+      <div class="result-header" id="res-header"></div>
+      <div id="res-text"></div>
     </div>
 
-    <button class="btn-next" id="btn-next" onclick="nextQuestion()">次の問題へ ➔</button>
+    <button class="btn-next" id="btn-next" onclick="nextQuestion()"></button>
   </div>
 
   <div id="score-screen" class="score-screen" style="display:none;">
-    <h2>🎉 全問終了！</h2>
-    <p>あなたのスコア</p>
+    <h2 id="ui-end"></h2>
+    <p id="ui-yourscore"></p>
     <div class="score-circle" id="final-score">0/20</div>
-    <p id="final-msg">お疲れ様でした！</p>
-    <button class="btn-next" style="display:block; margin-top:16px;" onclick="restartQuiz()">もう一度最初から挑戦 🔄</button>
+    <p id="final-msg"></p>
+    <button class="btn-next" id="btn-restart" style="display:block; margin-top:16px;" onclick="restartQuiz()"></button>
   </div>
 </div>
 
 <script>
+// ===== 画面の文言（日本語 / ネパール語） =====
+const UI = {
+  title:     { ja: "🗣️ 介護オノマトペ 特化マスタークイズ", ne: "🗣️ हेरचाहमा प्रयोग हुने ओनोमाटोपिया क्विज" },
+  sub:       { ja: "現場で使う体調・痛みの言葉をマスターしよう！（全20問）", ne: "कार्यस्थलमा प्रयोग हुने स्वास्थ्य र दुखाइका शब्दहरू सिकौं! (जम्मा 20 प्रश्न)" },
+  qnum:      { ja: (n, t) => `第 ${n} 問 / 全 ${t} 問`, ne: (n, t) => `प्रश्न ${n} / ${t}` },
+  score:     { ja: s => `正解: ${s}`, ne: s => `सही: ${s}` },
+  audio:     { ja: w => `🔊 「${w}」を聴く`, ne: w => `🔊 「${w}」 सुन्नुहोस्` },
+  correct:   { ja: "⭕️ 正解です！", ne: "⭕️ सही उत्तर!" },
+  wrong:     { ja: "❌ 不正解…", ne: "❌ गलत उत्तर…" },
+  next:      { ja: "次の問題へ ➔", ne: "अर्को प्रश्न ➔" },
+  end:       { ja: "🎉 全問終了！", ne: "🎉 सबै प्रश्न सकियो!" },
+  yourscore: { ja: "あなたのスコア", ne: "तपाईंको अंक" },
+  restart:   { ja: "もう一度最初から挑戦 🔄", ne: "फेरि सुरुदेखि प्रयास गर्नुहोस् 🔄" },
+  msg20:     { ja: "完璧です！オノマトペマスターですね！🎉", ne: "उत्कृष्ट! तपाईं ओनोमाटोपिया मास्टर हुनुहुन्छ! 🎉" },
+  msg15:     { ja: "素晴らしい成績です！現場でもバッチリ使えます！👍", ne: "धेरै राम्रो नतिजा! कार्यस्थलमा पनि राम्रोसँग प्रयोग गर्न सक्नुहुन्छ! 👍" },
+  msg10:     { ja: "半分以上できました！もう一度復習してみましょう！😊", ne: "आधाभन्दा बढी सही भयो! एक पटक फेरि दोहोर्याऔं! 😊" },
+  msg0:      { ja: "繰り返し練習して覚えましょう！💪", ne: "बारम्बार अभ्यास गरेर सम्झौं! 💪" }
+};
+
+const CAT = {
+  pain:  { ja: "🩸 痛みの表現", ne: "दुखाइको अभिव्यक्ति" },
+  cond:  { ja: "🤒 体調の表現", ne: "स्वास्थ्य अवस्थाको अभिव्यक्ति" },
+  food:  { ja: "🍚 食事・お腹", ne: "खाना र पेट" },
+  move:  { ja: "🚶 動作・様子", ne: "चालढाल र अवस्था" },
+  skin:  { ja: "🧴 皮膚・感覚", ne: "छाला र अनुभूति" }
+};
+
+// ===== 問題データ（q/exp = 日本語、qn/en = ネパール語） =====
 const quizData = [
   // 1. 痛みのオノマトペ
-  { cat: "🩸 痛みの表現", word: "ガンガン", q: "利用者様が「頭がガンガンする」と言ったら、頭が強く脈打つように痛む状態である。", a: true, exp: "【正解：⭕️】「ガンガン」は大きな音が響くように頭が激しく痛む様子を表します。" },
-  { cat: "🩸 痛みの表現", word: "ズキズキ", q: "「足がズキズキ痛む」は、針で刺されたような一瞬の鋭い痛みを意味する。", a: false, exp: "【正解：❌】「ズキズキ」は脈拍に合わせて波のように続く痛みです。針で刺すような痛みに使うのは「チクチク」です。" },
-  { cat: "🩸 痛みの表現", word: "チクチク", q: "「お腹がチクチクする」は、針で軽く刺されたような小さな痛みを感じている状態である。", a: true, exp: "【正解：⭕️】「チクチク」は尖ったもので刺されたような断続的な痛みを表します。" },
-  { cat: "🩸 痛みの表現", word: "シクシク", q: "「お腹がシクシク痛む」は、立っていられないほどの激しい激痛を表す。", a: false, exp: "【正解：❌】「シクシク」は主にみぞおちやお腹が地味に継続して痛む様子を表します（主に女性やお腹に使われます）。" },
-  { cat: "🩸 痛みの表現", word: "キリキリ", q: "「胃がキリキリ痛む」は、胃が絞られるように強く痛む状態を表す。", a: true, exp: "【正解：⭕️】「キリキリ」は穴をあけられるような鋭く強い痛みを指します。" },
+  { cat: "pain", word: "ガンガン", a: true,
+    q: "利用者様が「頭がガンガンする」と言ったら、頭が強く脈打つように痛む状態である。",
+    qn: "प्रयोगकर्ताले 「頭がガンガンする」 भन्नुभयो भने, टाउको ढुकढुक गर्दै कडा दुखिरहेको अवस्था हो।",
+    exp: "【正解：⭕️】「ガンガン」は大きな音が響くように頭が激しく痛む様子を表します。",
+    en: "【सही उत्तर: ⭕️】「ガンガン」 ले ठूलो आवाज गुन्जिएजस्तै टाउको कडा दुख्ने अवस्था जनाउँछ।" },
+  { cat: "pain", word: "ズキズキ", a: false,
+    q: "「足がズキズキ痛む」は、針で刺されたような一瞬の鋭い痛みを意味する。",
+    qn: "「足がズキズキ痛む」 को अर्थ सुईले घोचेजस्तो क्षणभरको तीखो दुखाइ हो।",
+    exp: "【正解：❌】「ズキズキ」は脈拍に合わせて波のように続く痛みです。針で刺すような痛みに使うのは「チクチク」です。",
+    en: "【सही उत्तर: ❌】「ズキズキ」 नाडीको धड्कनसँगै छालजस्तै लगातार हुने दुखाइ हो। सुईले घोचेजस्तो दुखाइमा 「チクチク」 प्रयोग गरिन्छ।" },
+  { cat: "pain", word: "チクチク", a: true,
+    q: "「お腹がチクチクする」は、針で軽く刺されたような小さな痛みを感じている状態である。",
+    qn: "「お腹がチクチクする」 भनेको सुईले हल्का घोचेजस्तो सानो दुखाइ महसुस भइरहेको अवस्था हो।",
+    exp: "【正解：⭕️】「チクチク」は尖ったもので刺されたような断続的な痛みを表します。",
+    en: "【सही उत्तर: ⭕️】「チクチク」 ले धारिलो चीजले घोचेजस्तो, रोकिँदै-रोकिँदै हुने दुखाइ जनाउँछ।" },
+  { cat: "pain", word: "シクシク", a: false,
+    q: "「お腹がシクシク痛む」は、立っていられないほどの激しい激痛を表す。",
+    qn: "「お腹がシクシク痛む」 ले उभिन नसकिने जत्तिको अत्यन्त कडा दुखाइ जनाउँछ।",
+    exp: "【正解：❌】「シクシク」は主にみぞおちやお腹が地味に継続して痛む様子を表します（主に女性やお腹に使われます）。",
+    en: "【सही उत्तर: ❌】「シクシク」 ले मुख्यतया पेटको माथिल्लो भाग वा पेट हल्का तर लगातार दुखिरहेको अवस्था जनाउँछ (प्रायः पेटको दुखाइमा प्रयोग गरिन्छ)।" },
+  { cat: "pain", word: "キリキリ", a: true,
+    q: "「胃がキリキリ痛む」は、胃が絞られるように強く痛む状態を表す。",
+    qn: "「胃がキリキリ痛む」 ले आमाशय निचोरिएजस्तो कडा दुखेको अवस्था जनाउँछ।",
+    exp: "【正解：⭕️】「キリキリ」は穴をあけられるような鋭く強い痛みを指します。",
+    en: "【सही उत्तर: ⭕️】「キリキリ」 ले प्वाल पारिएजस्तो तीखो र कडा दुखाइ जनाउँछ।" },
 
   // 2. 体調・気分のオノマトペ
-  { cat: "🤒 体調の表現", word: "ゾワゾワ", q: "「背中がゾワゾワする」と言われたら、寒気（熱が出はじめる前兆）の可能性がある。", a: true, exp: "【正解：⭕️】「ゾワゾワ」は寒気やゾクゾクする感覚を表し、発熱の前兆によく見られます。" },
-  { cat: "🤒 体調の表現", word: "ムカムカ", q: "「胸がムカムカする」は、胸のあたりが痒くてたまらない状態のことである。", a: false, exp: "【正解：❌】「ムカムカ」は吐き気（気持ち悪い状態）や腹立たしさを表します。痒みではありません。" },
-  { cat: "🤒 体調の表現", word: "グラグラ", q: "「頭がグラグラする」は、めまいがして立ちくらみや揺れを感じている状態である。", a: true, exp: "【正解：⭕️】「グラグラ」「フラフラ」は、めまいや平衡感覚が保てない状態を表します。" },
-  { cat: "🤒 体調の表現", word: "フラフラ", q: "「フラフラする」と言っている利用者は転倒リスクが低いため一人で歩かせてよい。", a: false, exp: "【正解：❌】「フラフラ」は力が入らず千鳥足になる状態で、転倒の危険が非常に高いです！付き添いが必要です。" },
+  { cat: "cond", word: "ゾワゾワ", a: true,
+    q: "「背中がゾワゾワする」と言われたら、寒気（熱が出はじめる前兆）の可能性がある。",
+    qn: "「背中がゾワゾワする」 भन्नुभयो भने, जाडो लागेको (ज्वरो आउन लागेको संकेत) हुन सक्छ।",
+    exp: "【正解：⭕️】「ゾワゾワ」は寒気やゾクゾクする感覚を表し、発熱の前兆によく見られます。",
+    en: "【सही उत्तर: ⭕️】「ゾワゾワ」 ले जाडो लाग्ने वा सिरिङ्ग हुने अनुभूति जनाउँछ, र प्रायः ज्वरो आउनुअघि देखिन्छ।" },
+  { cat: "cond", word: "ムカムカ", a: false,
+    q: "「胸がムカムカする」は、胸のあたりが痒くてたまらない状態のことである。",
+    qn: "「胸がムカムカする」 भनेको छातीतिर असह्य चिलाइरहेको अवस्था हो।",
+    exp: "【正解：❌】「ムカムカ」は吐き気（気持ち悪い状態）や腹立たしさを表します。痒みではありません。",
+    en: "【सही उत्तर: ❌】「ムカムカ」 ले वाकवाकी लाग्ने (असहज महसुस हुने) अवस्था वा रिस उठेको भाव जनाउँछ। चिलाउनु होइन।" },
+  { cat: "cond", word: "グラグラ", a: true,
+    q: "「頭がグラグラする」は、めまいがして立ちくらみや揺れを感じている状態である。",
+    qn: "「頭がグラグラする」 भनेको रिँगटा लागेर, उठ्दा आँखा तिरमिराउने वा हल्लिएजस्तो महसुस भएको अवस्था हो।",
+    exp: "【正解：⭕️】「グラグラ」「フラフラ」は、めまいや平衡感覚が保てない状態を表します。",
+    en: "【सही उत्तर: ⭕️】「グラグラ」「フラフラ」 ले रिँगटा लाग्ने वा शरीरको सन्तुलन राख्न नसकिने अवस्था जनाउँछ।" },
+  { cat: "cond", word: "フラフラ", a: false,
+    q: "「フラフラする」と言っている利用者は転倒リスクが低いため一人で歩かせてよい。",
+    qn: "「フラフラする」 भन्ने प्रयोगकर्ताको लड्ने जोखिम कम हुन्छ, त्यसैले एक्लै हिँड्न दिए हुन्छ।",
+    exp: "【正解：❌】「フラフラ」は力が入らず千鳥足になる状態で、転倒の危険が非常に高いです！付き添いが必要です。",
+    en: "【सही उत्तर: ❌】「フラフラ」 शरीरमा बल नभएर लरखराउँदै हिँड्ने अवस्था हो, लड्ने खतरा धेरै उच्च हुन्छ! साथमा बसेर सहयोग गर्नुपर्छ।" },
 
   // 3. 食事・お腹のオノマトペ
-  { cat: "🍚 食事・お腹", word: "ペコペコ", q: "「お腹がペコペコだ」は、お腹が空いて食事を食べたい状態を表す。", a: true, exp: "【正解：⭕️】「ペコペコ」は空腹を表します。「お腹が痛い」の意味ではないので注意しましょう。" },
-  { cat: "🍚 食事・お腹", word: "ガツガツ", q: "「ガツガツ食べる」は、ゆっくり時間をかけて上品に食事をすることである。", a: false, exp: "【正解：❌】「ガツガツ」は勢いよく勢い任せに食べる様子です。誤嚥（ゴホゴホ）に注意が必要です。" },
-  { cat: "🍚 食事・お腹", word: "ゴクゴク", q: "「水分をゴクゴク飲む」は、一口ずつゆっくり飲み込んでいる様子を表す。", a: false, exp: "【正解：❌】「ゴクゴク」は勢いよく続けて水分を流し込むことです。高齢者のゴクゴク飲みは誤嚥リスクに注意します。" },
-  { cat: "🍚 食事・お腹", word: "ゴロゴロ", q: "「お腹がゴロゴロ言っている」は、腸が動いて便意や下痢の可能性がある状態である。", a: true, exp: "【正解：⭕️】「ゴロゴロ」はお腹（腸）の動く音や、消化不良・便意を表します。" },
+  { cat: "food", word: "ペコペコ", a: true,
+    q: "「お腹がペコペコだ」は、お腹が空いて食事を食べたい状態を表す。",
+    qn: "「お腹がペコペコだ」 ले भोक लागेर खाना खान मन लागेको अवस्था जनाउँछ।",
+    exp: "【正解：⭕️】「ペコペコ」は空腹を表します。「お腹が痛い」の意味ではないので注意しましょう。",
+    en: "【सही उत्तर: ⭕️】「ペコペコ」 ले भोक जनाउँछ। \"पेट दुख्यो\" भन्ने अर्थ होइन, ध्यान दिनुहोस्।" },
+  { cat: "food", word: "ガツガツ", a: false,
+    q: "「ガツガツ食べる」は、ゆっくり時間をかけて上品に食事をすることである。",
+    qn: "「ガツガツ食べる」 भनेको बिस्तारै समय लगाएर शिष्ट तरिकाले खाना खानु हो।",
+    exp: "【正解：❌】「ガツガツ」は勢いよく勢い任せに食べる様子です。誤嚥（ゴホゴホ）に注意が必要です。",
+    en: "【सही उत्तर: ❌】「ガツガツ」 हतार-हतार, जोडले खाने तरिका हो। खाना श्वासनलीमा जाने (誤嚥, ゴホゴホ खोकी) बाट सावधान रहनुपर्छ।" },
+  { cat: "food", word: "ゴクゴク", a: false,
+    q: "「水分をゴクゴク飲む」は、一口ずつゆっくり飲み込んでいる様子を表す。",
+    qn: "「水分をゴクゴク飲む」 ले एक-एक घुट्की बिस्तारै निलिरहेको अवस्था जनाउँछ।",
+    exp: "【正解：❌】「ゴクゴク」は勢いよく続けて水分を流し込むことです。高齢者のゴクゴク飲みは誤嚥リスクに注意します。",
+    en: "【सही उत्तर: ❌】「ゴクゴク」 भनेको लगातार जोडले पानी पिउनु हो। वृद्धवृद्धाले ゴクゴク पिउँदा श्वासनलीमा जाने (誤嚥) जोखिमबाट सावधान रहनुपर्छ।" },
+  { cat: "food", word: "ゴロゴロ", a: true,
+    q: "「お腹がゴロゴロ言っている」は、腸が動いて便意や下痢の可能性がある状態である。",
+    qn: "「お腹がゴロゴロ言っている」 भनेको आन्द्रा चलिरहेको, दिसा लाग्ने वा पखाला लाग्न सक्ने अवस्था हो।",
+    exp: "【正解：⭕️】「ゴロゴロ」はお腹（腸）の動く音や、消化不良・便意を表します。",
+    en: "【सही उत्तर: ⭕️】「ゴロゴロ」 ले पेट (आन्द्रा) चल्दाको आवाज, अपच वा दिसा लाग्ने संकेत जनाउँछ।" },
 
   // 4. 動作・様子のオノマトペ
-  { cat: "🚶 動作・様子", word: "よろよろ", q: "「よろよろ歩く」は、足元が定まらず今にも倒れそうな歩き方のことである。", a: true, exp: "【正解：⭕️】「よろよろ」は筋力低下などで身体のバランスが取れない歩き方です。" },
-  { cat: "🚶 動作・様子", word: "うとうと", q: "「うとうとしている」は、完全に目が冴えて元気に起きている状態である。", a: false, exp: "【正解：❌】「うとうと」は半分眠りかけている（居眠りしそうな）状態です。" },
-  { cat: "🚶 動作・様子", word: "そわそわ", q: "「そわそわしている」は、落ち着きがなく心が何かにとらわれている状態を表す。", a: true, exp: "【正解：⭕️】「そわそわ」はトイレに行きたい時や不安な時、落ち着きがない様子を表します。" },
-  { cat: "🚶 動作・様子", word: "うろうろ", q: "「うろうろ歩く」は、目的もなく歩き回る（徘徊などの）状態を表すことがある。", a: true, exp: "【正解：⭕️】「うろうろ」はあてもなく歩き回る動作です。" },
+  { cat: "move", word: "よろよろ", a: true,
+    q: "「よろよろ歩く」は、足元が定まらず今にも倒れそうな歩き方のことである。",
+    qn: "「よろよろ歩く」 भनेको खुट्टा स्थिर नभई अहिल्यै लड्लाजस्तो गरी हिँड्नु हो।",
+    exp: "【正解：⭕️】「よろよろ」は筋力低下などで身体のバランスが取れない歩き方です。",
+    en: "【सही उत्तर: ⭕️】「よろよろ」 मांसपेशी कमजोर भएका कारण शरीरको सन्तुलन राख्न नसकी हिँड्ने तरिका हो।" },
+  { cat: "move", word: "うとうと", a: false,
+    q: "「うとうとしている」は、完全に目が冴えて元気に起きている状態である。",
+    qn: "「うとうとしている」 भनेको पूरै ब्युँझिएर स्फूर्तिसाथ जागा रहेको अवस्था हो।",
+    exp: "【正解：❌】「うとうと」は半分眠りかけている（居眠りしそうな）状態です。",
+    en: "【सही उत्तर: ❌】「うとうと」 आधा निदाउन लागेको (झकाइ लागेको) अवस्था हो।" },
+  { cat: "move", word: "そわそわ", a: true,
+    q: "「そわそわしている」は、落ち着きがなく心が何かにとらわれている状態を表す。",
+    qn: "「そわそわしている」 ले शान्त नभई मन कुनै कुरामा अल्झिरहेको अवस्था जनाउँछ।",
+    exp: "【正解：⭕️】「そわそわ」はトイレに行きたい時や不安な時、落ち着きがない様子を表します。",
+    en: "【सही उत्तर: ⭕️】「そわそわ」 ले शौचालय जान मन लागेको बेला वा चिन्ता लागेको बेला शान्त हुन नसकेको अवस्था जनाउँछ।" },
+  { cat: "move", word: "うろうろ", a: true,
+    q: "「うろうろ歩く」は、目的もなく歩き回る（徘徊などの）状態を表すことがある。",
+    qn: "「うろうろ歩く」 ले उद्देश्यबिना यताउता घुमिरहने (徘徊 जस्तो) अवस्था जनाउन सक्छ।",
+    exp: "【正解：⭕️】「うろうろ」はあてもなく歩き回る動作です。",
+    en: "【सही उत्तर: ⭕️】「うろうろ」 कुनै गन्तव्यबिना यताउता हिँडिरहने चाल हो।" },
 
   // 5. 皮膚・感覚のオノマトペ
-  { cat: "🧴 皮膚・感覚", word: "かさかさ", q: "「皮膚がかさかさしている」は、水分が多く湿っている状態のことである。", a: false, exp: "【正解：❌】「かさかさ」は乾燥して潤いがない状態です。保湿剤の塗布などのケアが必要です。" },
-  { cat: "🧴 皮膚・感覚", word: "じくじく", q: "「傷口がじくじくしている」は、浸出液や汁が出て湿っている状態である。", a: true, exp: "【正解：⭕️】「じくじく」は傷口や湿疹から液体（汁）が出ている状態を表します。" },
-  { cat: "🧴 皮膚・感覚", word: "パンパン", q: "「足がパンパンにはれている」は、むくみ（浮腫）や腫れで張っている状態である。", a: true, exp: "【正解：⭕️】「パンパン」は皮膚が強く張っているむくみや腫れを表します。" }
+  { cat: "skin", word: "かさかさ", a: false,
+    q: "「皮膚がかさかさしている」は、水分が多く湿っている状態のことである。",
+    qn: "「皮膚がかさかさしている」 भनेको छालामा धेरै पानी भएर ओसिलो भएको अवस्था हो।",
+    exp: "【正解：❌】「かさかさ」は乾燥して潤いがない状態です。保湿剤の塗布などのケアが必要です。",
+    en: "【सही उत्तर: ❌】「かさかさ」 छाला सुख्खा भएर ओसिलोपन नभएको अवस्था हो। मोइस्चराइजर लगाउने जस्ता हेरचाह आवश्यक हुन्छ।" },
+  { cat: "skin", word: "じくじく", a: true,
+    q: "「傷口がじくじくしている」は、浸出液や汁が出て湿っている状態である。",
+    qn: "「傷口がじくじくしている」 भनेको घाउबाट तरल पदार्थ (पानी/रस) निस्केर ओसिलो भएको अवस्था हो।",
+    exp: "【正解：⭕️】「じくじく」は傷口や湿疹から液体（汁）が出ている状態を表します。",
+    en: "【सही उत्तर: ⭕️】「じくじく」 ले घाउ वा दादबाट तरल पदार्थ निस्किरहेको अवस्था जनाउँछ।" },
+  { cat: "skin", word: "パンパン", a: true,
+    q: "「足がパンパンにはれている」は、むくみ（浮腫）や腫れで張っている状態である。",
+    qn: "「足がパンパンにはれている」 भनेको खुट्टा सुन्निएर (浮腫) छाला तन्किएको अवस्था हो।",
+    exp: "【正解：⭕️】「パンパン」は皮膚が強く張っているむくみや腫れを表します。",
+    en: "【सही उत्तर: ⭕️】「パンパン」 ले छाला कडासँग तन्किने गरी सुन्निएको अवस्था जनाउँछ।" }
 ];
 
 let currentIndex = 0;
 let score = 0;
 let answered = false;
+let lastCorrect = null;
+let mode = "ja"; // "ja" | "both" | "ne"
+
+try { mode = localStorage.getItem("onomatope-lang") || "ja"; } catch (e) {}
+
+// 日本語・ネパール語をモードに応じて組み立てる
+function t(ja, ne) {
+  if (mode === "ja") return ja;
+  if (mode === "ne") return `<span class="ne">${ne}</span>`;
+  return `${ja}<div class="ne">${ne}</div>`;
+}
+function tInline(ja, ne) {
+  if (mode === "ja") return ja;
+  if (mode === "ne") return ne;
+  return `${ja}<span class="ne">${ne}</span>`;
+}
+
+function setMode(m) {
+  mode = m;
+  try { localStorage.setItem("onomatope-lang", m); } catch (e) {}
+  const card = document.getElementById("card");
+  card.classList.toggle("ne-only", m === "ne");
+  card.classList.toggle("both", m === "both");
+  document.querySelectorAll(".lang-btn").forEach(b => b.classList.toggle("active", b.dataset.mode === m));
+  renderAll();
+}
+
+function renderAll() {
+  document.getElementById("ui-title").innerHTML = mode === "ne" ? UI.title.ne : UI.title.ja;
+  document.getElementById("ui-sub").innerHTML = t(UI.sub.ja, UI.sub.ne);
+  document.getElementById("ui-end").innerHTML = t(UI.end.ja, UI.end.ne);
+  document.getElementById("ui-yourscore").innerHTML = t(UI.yourscore.ja, UI.yourscore.ne);
+  document.getElementById("btn-restart").innerHTML = t(UI.restart.ja, UI.restart.ne);
+  document.getElementById("btn-next").innerHTML = t(UI.next.ja, UI.next.ne);
+  document.getElementById("score-counter").innerHTML = mode === "ne" ? UI.score.ne(score) : UI.score.ja(score);
+
+  if (currentIndex < quizData.length) renderQuestion();
+  if (answered && lastCorrect !== null) renderResult();
+  if (document.getElementById("score-screen").style.display === "block") renderScoreMsg();
+}
+
+function renderQuestion() {
+  const q = quizData[currentIndex];
+  const total = quizData.length;
+  document.getElementById("q-num").innerHTML = mode === "ne" ? UI.qnum.ne(currentIndex + 1, total) : UI.qnum.ja(currentIndex + 1, total);
+  document.getElementById("q-cat").innerHTML = tInline(CAT[q.cat].ja, `<span class="ne">${CAT[q.cat].ne}</span>`);
+  document.getElementById("q-text").innerHTML = t(q.q, q.qn);
+  document.getElementById("audio-btn").innerHTML = mode === "ne" ? UI.audio.ne(q.word) : UI.audio.ja(q.word);
+}
+
+function renderResult() {
+  const q = quizData[currentIndex];
+  const resHeader = document.getElementById("res-header");
+  resHeader.innerHTML = lastCorrect ? t(UI.correct.ja, UI.correct.ne) : t(UI.wrong.ja, UI.wrong.ne);
+  resHeader.className = "result-header " + (lastCorrect ? "is-correct" : "is-wrong");
+  document.getElementById("res-text").innerHTML = t(q.exp, q.en);
+}
 
 function loadQuestion() {
   answered = false;
-  const q = quizData[currentIndex];
-  document.getElementById("q-num").innerText = `第 ${currentIndex + 1} 問 / 全 ${quizData.length} 問`;
-  document.getElementById("q-cat").innerText = q.cat;
-  document.getElementById("q-text").innerText = q.q;
-  document.getElementById("audio-btn").innerText = `🔊 「${q.word}」を聴く`;
+  lastCorrect = null;
+  renderQuestion();
   document.getElementById("explanation").style.display = "none";
   document.getElementById("btn-next").style.display = "none";
-  
-  const btns = document.querySelectorAll('.btn-choice');
-  btns.forEach(b => b.style.pointerEvents = 'auto');
+  document.querySelectorAll('.btn-choice').forEach(b => b.style.pointerEvents = 'auto');
 }
 
 function playAudio() {
+  // 音声は常に日本語で読み上げ（オノマトペの発音練習のため）
   const word = quizData[currentIndex].word;
   const uttr = new SpeechSynthesisUtterance(word);
   uttr.lang = "ja-JP";
@@ -182,26 +369,14 @@ function checkAnswer(userAns) {
   answered = true;
 
   const q = quizData[currentIndex];
-  const isCorrect = (userAns === q.a);
-  if (isCorrect) score++;
+  lastCorrect = (userAns === q.a);
+  if (lastCorrect) score++;
 
-  document.getElementById("score-counter").innerText = `正解: ${score}`;
-
-  const resHeader = document.getElementById("res-header");
-  if (isCorrect) {
-    resHeader.innerText = "⭕️ 正解です！";
-    resHeader.className = "result-header is-correct";
-  } else {
-    resHeader.innerText = "❌ 不正解…";
-    resHeader.className = "result-header is-wrong";
-  }
-
-  document.getElementById("res-text").innerHTML = q.exp;
+  document.getElementById("score-counter").innerHTML = mode === "ne" ? UI.score.ne(score) : UI.score.ja(score);
+  renderResult();
   document.getElementById("explanation").style.display = "block";
   document.getElementById("btn-next").style.display = "block";
-
-  const btns = document.querySelectorAll('.btn-choice');
-  btns.forEach(b => b.style.pointerEvents = 'none');
+  document.querySelectorAll('.btn-choice').forEach(b => b.style.pointerEvents = 'none');
 }
 
 function nextQuestion() {
@@ -213,29 +388,32 @@ function nextQuestion() {
   }
 }
 
+function renderScoreMsg() {
+  let key;
+  if (score === quizData.length) key = "msg20";
+  else if (score >= 15) key = "msg15";
+  else if (score >= 10) key = "msg10";
+  else key = "msg0";
+  document.getElementById("final-msg").innerHTML = t(UI[key].ja, UI[key].ne);
+}
+
 function showScore() {
   document.getElementById("quiz-screen").style.display = "none";
   document.getElementById("score-screen").style.display = "block";
   document.getElementById("final-score").innerText = `${score} / ${quizData.length}`;
-  
-  let msg = "";
-  if (score === 20) msg = "完璧です！オノマトペマスターですね！🎉";
-  else if (score >= 15) msg = "素晴らしい成績です！現場でもバッチリ使えます！👍";
-  else if (score >= 10) msg = "半分以上できました！もう一度復習してみましょう！😊";
-  else msg = "繰り返し練習して覚せましょう！💪";
-  
-  document.getElementById("final-msg").innerText = msg;
+  renderScoreMsg();
 }
 
 function restartQuiz() {
   currentIndex = 0;
   score = 0;
-  document.getElementById("score-counter").innerText = "正解: 0";
   document.getElementById("score-screen").style.display = "none";
   document.getElementById("quiz-screen").style.display = "block";
+  renderAll();
   loadQuestion();
 }
 
+setMode(mode);
 loadQuestion();
 </script>
 </body>
